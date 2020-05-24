@@ -2,7 +2,7 @@
     "name": "runeBot",
     "version": "0.0.1",
     "description": "a bot for drawing runes in discord",
-    "main": "bot.js",
+    "main": "bot.mjs",
     "author": "Carter Foulger",
     "license": "MIT",
     "dependencies": {
