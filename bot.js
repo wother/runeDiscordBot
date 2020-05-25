@@ -2,11 +2,12 @@
 require('dotenv').config();
 
 // Import libraries
-import { Client } from 'discord.js';
-const client = new Client();
+const Discord = require('discord.js');
+const client = new Discord.Client();
 
 // workers imports
-import randomRune from './workers/runes.js';
+// import randomRune from './workers/runes.js';
+const randomRune = require('./workers/runes.js');
 
 // Event listener when a user connected to the server.
 client.on('ready', () => {
