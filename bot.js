@@ -16,9 +16,15 @@ client.on('message', msg => {
   // We check the message content and looks for the word "ping", so we can have the bot respond "pong"
   if (msg.content === 'ping') {
     msg.reply('pong');
+    // TODO: Rune logic calls go here.
   }
 
 });
 
 // Initialize bot by connecting to the server
-client.login(process.env.DISCORD_TOKEN);
+try {
+  client.login(process.env.DISCORD_TOKEN);
+} catch(err) {
+  throw new Error(err)
+}
+
