@@ -5,12 +5,13 @@
 const randomFromArray = require('./randomizer.js')
 
 function randomRune(inputNumber) {
-    // TODO parse the number to how many runes to "cast"
-    let output = "";
+    let output = {};
+
+    // We generate an array of rune objects with name, hyperlink, and image.
 
     switch (inputNumber) {
         case 1:
-            output = genLink(randomFromArray(futharkArray));
+            output = genRuneObject(randomFromArray(futharkArray));
             break;
         case 3:
             output = numUniqueRunes(3);
@@ -52,7 +53,16 @@ const futharkArray = [
     "wunjo"
 ];
 
-function genLink(runeName) {
+function genRuneObject (nameInput) {
+    let output = {
+        "name" : nameInput,
+        "imgURL" : genImgLink(nameInput),
+        "descURL" : genInfoLink(nameInput)
+    }
+    return output;
+}
+
+function genImgLink(runeName) {
     return `https://runesecrets.com/img/${runeName}-100x100.gif`;
 }
 

@@ -2,8 +2,8 @@
 require('dotenv').config();
 
 // Import libraries
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const { Client, MessageEmbed } = require('discord.js');
+const client = new Client();
 
 // workers imports
 const randomRune = require('./workers/runes.js');
@@ -18,16 +18,26 @@ client.on('message', msg => {
 
   // We check the message content and looks for the word "ping", so we can have the bot respond "pong"
   if (msg.content === '!cast') {
-    msg.reply(`Random Cast! ${randomRune(1)}`)
+    msg.reply(runeToEmbed(randomRune(1)));
   } else if (msg.content === '!castone') {
-    msg.reply(`Your Rune is: ${randomRune(1)}`);
+    msg.reply(runeToEmbed(randomRune(1)));
   } else if (msg.content === '!castthree') {
-    msg.reply(`Your runes are ${randomRune(3)}`)
+    msg.reply(runeToEmbed(randomRune(3)));
   } else if (msg.content === '!castfive') {
-    msg.reply(`Your runes are ${randomRune(5)}`)
+    msg.reply(runeToEmbed(randomRune(5)));
   }
 
 });
+
+function runeToEmbed (runeObject) {
+  
+  const embed = new MessageEmbed()
+  .setTitle(runeObject.name)
+  .setImage(runeObject.imgURL)
+  .setURL(runeObject.descURL);
+
+  return embed;
+}
 
 // Initialize bot by connecting to the server
 try {
