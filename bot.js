@@ -6,7 +6,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 // workers imports
-// import { randomIntBetween } from "./workers/randomizer";
+// const rantInt = require('./workers/randomizer.js')
 
 // Event listener when a user connected to the server.
 client.on('ready', () => {
@@ -17,8 +17,8 @@ client.on('ready', () => {
 client.on('message', msg => {
 
   // We check the message content and looks for the word "ping", so we can have the bot respond "pong"
-  if (msg.content === 'ping') {
-    msg.reply('pong' + msg.content);
+  if (msg.content.contains('ping')) {
+    msg.reply('pong ' + msg.content);
     // TODO: Rune logic calls go here.
   } 
 
@@ -30,7 +30,3 @@ try {
 } catch(err) {
   throw new Error(err)
 }
-
-// function echoMsg(input) {
-//   return input;
-// }
