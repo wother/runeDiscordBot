@@ -17,7 +17,8 @@ client.on('ready', () => {
 client.on('message', msg => {
 
   // We check the message content and looks for the word "ping", so we can have the bot respond "pong"
-  if (msg.content.contains('ping')) {
+  var msgContentString = new String(msg.content);
+  if (msgContentString.includes('ping')) {
     msg.reply('pong ' + msg.content);
     // TODO: Rune logic calls go here.
   } 
