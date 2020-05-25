@@ -20,9 +20,7 @@ client.on('message', msg => {
   if (msg.content === 'ping') {
     msg.reply('pong' + msg.content);
     // TODO: Rune logic calls go here.
-  } else if (msg.content === 'echoMsg') {
-    msg.reply(echoMsg(msg))
-  }
+  } 
 
 });
 
