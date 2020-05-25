@@ -5,6 +5,9 @@ require('dotenv').config();
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
+// workers imports
+import { randomIntBetween } from "./workers/randomizer";
+
 // Event listener when a user connected to the server.
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -17,6 +20,8 @@ client.on('message', msg => {
   if (msg.content === 'ping') {
     msg.reply('pong');
     // TODO: Rune logic calls go here.
+  } else if (msg.content === 'echoMsg') {
+    msg.reply(echoMsg(msg))
   }
 
 });
@@ -28,3 +33,6 @@ try {
   throw new Error(err)
 }
 
+function echoMsg(input) {
+  return input;
+}
