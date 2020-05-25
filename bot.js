@@ -6,7 +6,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 // workers imports
-import { randomIntBetween } from "./workers/randomizer";
+// import { randomIntBetween } from "./workers/randomizer";
 
 // Event listener when a user connected to the server.
 client.on('ready', () => {
@@ -31,6 +31,6 @@ try {
   throw new Error(err)
 }
 
-function echoMsg(input) {
-  return input;
-}
+// function echoMsg(input) {
+//   return input;
+// }
