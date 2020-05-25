@@ -17,9 +17,10 @@ client.on('ready', () => {
 client.on('message', msg => {
 
   // We check the message content and looks for the word "ping", so we can have the bot respond "pong"
-  if (msg.content === '!castOne' || msg.content === '!cast') {
+  if (msg.content === '!cast') {
+    msg.reply(`Random Cast! ${randomRune(1)}`)
+  } else if (msg.content === '!castOne') {
     msg.reply(`Your Rune is: ${randomRune(1)}`);
-    // TODO: Rune logic calls go here.
   } else if (msg.content === '!castThree') {
     msg.reply(`Your runes are ${randomRune(3)}`)
   }
