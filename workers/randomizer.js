@@ -2,21 +2,18 @@
  * values. 
  */
 
-let randomizer = {
-    /**
-     * This method will return one value at random from the input Object.
-     * 
-     * @param {Object} inputObject the object you want a random attribute from.
-     */
-    randomAttribute = function (inputObject) {
-        const keysArray = [...Object.keys(inputObject)];
-        const keysLength = keysArray.length;
-        return inputObject[keysArray[randomIntBetween(0, keysLength - 1)]];
-    }
+
+/**
+ * This method will return one value at random from the input Array.
+ * 
+ * @param {Array} inputObject the array you want a random value from.
+ */
+function randomFromArray (arrayInput) {
+    return arrayInput[randomIntBetween(0, arrayInput.length - 1)];
 };
 
 function randomIntBetween (min, max) {
     return Math.floor(Math.random() * max + min);
 }
 
-module.exports = randomizer;
+module.exports = randomFromArray;

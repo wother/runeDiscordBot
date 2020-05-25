@@ -19,10 +19,12 @@ client.on('message', msg => {
   // We check the message content and looks for the word "ping", so we can have the bot respond "pong"
   if (msg.content === '!cast') {
     msg.reply(`Random Cast! ${randomRune(1)}`)
-  } else if (msg.content === '!castOne') {
+  } else if (msg.content === '!castone') {
     msg.reply(`Your Rune is: ${randomRune(1)}`);
-  } else if (msg.content === '!castThree') {
+  } else if (msg.content === '!castthree') {
     msg.reply(`Your runes are ${randomRune(3)}`)
+  } else if (msg.content === '!castfive') {
+    msg.reply(`Your runes are ${randomRune(5)}`)
   }
 
 });
