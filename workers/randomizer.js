@@ -9,7 +9,7 @@
 export function randomAttribute (inputObject) {
     const keysArray = [Object.keys(inputObject)];
     const keysLength = keysArray.length;
-
+    return inputObject[keysArray[randomIntBetween(0, keysLength - 1)]];
  }
 
  /**
