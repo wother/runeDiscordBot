@@ -1,7 +1,7 @@
 {
   "name": "rune-secrets-discord-bot",
   "version": "1.2.0",
-  "description": "Simple discord bot script for responding to ping message from user.",
+  "description": "Simple Discord bot to draw runes from the elder Futhark",
   "main": "bot.js",
   "keywords": [
     "rune",
@@ -9,7 +9,7 @@
     "discord",
     "bot"
   ],
-  "author": "Rene Padillo",
+  "author": "Carter Foulger",
   "license": "MIT",
   "scripts": {
     "start": "node bot.js"
