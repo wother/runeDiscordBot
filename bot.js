@@ -17,21 +17,38 @@ client.on('ready', () => {
 client.on('message', msg => {
 
   // We check the message content and parse it
-  if (msg.content === '!cast') {
+  if (msg.content === '!help') {
+    let helpString = `
+    The Rune Secrets Bot will draw runes for you from the elder Futhark.\n
+    Commands are: \n
+    **!cast** or **!castone** for a single rune casting\n
+    **!castthree** for a three rune casting\n
+    **!castfive** for a five rune casting (careful...)
+    `;
+    msg.channel.send(helpString);
+  } else if (msg.content === '!cast') {
     let runeEmbed = runeToEmbed(randomRune(1), msg);
-    msg.channel.sendEmbed(runeEmbed, "Your Rune:");
+
+    msg.channel.send("Your Rune:", runeEmbed);
+
   } else if (msg.content === '!castone') {
     let runeEmbed = runeToEmbed(randomRune(1), msg);
-    msg.channel.sendEmbed(runeEmbed, "One Rune:");
+
+    msg.channel.send("One Rune:", runeEmbed);
+
   } else if (msg.content === '!castthree') {
     let runeArray = randomRune(3);
     runeArray.forEach(runeObj =>{
-      msg.channel.sendEmbed(runeToEmbed(runeObj, msg));
+
+      msg.channel.send("Pull:", runeToEmbed(runeObj, msg));
+
     });
   } else if (msg.content === '!castfive') {
     let runeArray = randomRune(5);
     runeArray.forEach(runeObj =>{
-      msg.channel.sendEmbed(runeToEmbed(runeObj, msg));
+
+      msg.channel.send("Pull:", runeToEmbed(runeObj, msg));
+      
     });
   }
 

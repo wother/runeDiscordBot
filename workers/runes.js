@@ -19,8 +19,8 @@ function randomRune(inputNumber) {
         case 5:
             output = numUniqueRunes(5);
             break;
-        default :
-            output = genLink(randomFromArray(futharkArray));
+        // default :
+        //     output = genLink(randomFromArray(futharkArray));
     }
 
     return output;
