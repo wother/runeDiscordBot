@@ -41,10 +41,13 @@ function runeToEmbed (runeObject, inputMessage) {
     
   const embed = new MessageEmbed(inputMessage, {
     "title" : runeObject.name,
-    "image" : runeObject.imgURL,
-    "url"   : runeObject.descURL
+    "url"   : runeObject.descURL,
+    "image" : {
+      "url"     : runeObject.imgURL,
+      "height"  : 100,
+      "width"   : 100
+    }
   });
-
 
   return embed;
 };
