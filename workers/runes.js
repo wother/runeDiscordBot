@@ -5,7 +5,7 @@
 const randomFromArray = require('./randomizer.js')
 
 function randomRune(inputNumber) {
-    let output = {};
+    let output;
 
     // We generate an array of rune objects with name, hyperlink, and image.
 
@@ -71,14 +71,15 @@ function genInfoLink (runeName) {
 }
 
 function numUniqueRunes(inputNumber) {
-    let output = "";
+    let output = [];
     let futharkCopy = [...futharkArray];
     let randoRunes = futharkCopy.sort(()=>{ return .5 - Math.random()})
         .slice(0 , inputNumber);
+    
     randoRunes.forEach(runeName => {
-        output += (genLink(runeName) + " ")
+        output.push(genRuneObject(runeName));
     });
-    return output.trim();
+    return output;
 }
 
 module.exports = randomRune;

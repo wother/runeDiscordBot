@@ -16,28 +16,38 @@ client.on('ready', () => {
 // Event listener when a user sends a message in the chat.
 client.on('message', msg => {
 
-  // We check the message content and looks for the word "ping", so we can have the bot respond "pong"
+  // We check the message content and parse it
   if (msg.content === '!cast') {
-    msg.reply(runeToEmbed(randomRune(1)));
+    let runeEmbed = runeToEmbed(randomRune(1), msg);
+    msg.channel.sendEmbed(runeEmbed, "Your Rune:");
   } else if (msg.content === '!castone') {
-    msg.reply(runeToEmbed(randomRune(1)));
+    let runeEmbed = runeToEmbed(randomRune(1), msg);
+    msg.channel.sendEmbed(runeEmbed, "One Rune:");
   } else if (msg.content === '!castthree') {
-    msg.reply(runeToEmbed(randomRune(3)));
+    let runeArray = randomRune(3);
+    runeArray.forEach(runeObj =>{
+      msg.channel.sendEmbed(runeToEmbed(runeObj, msg));
+    });
   } else if (msg.content === '!castfive') {
-    msg.reply(runeToEmbed(randomRune(5)));
+    let runeArray = randomRune(5);
+    runeArray.forEach(runeObj =>{
+      msg.channel.sendEmbed(runeToEmbed(runeObj, msg));
+    });
   }
 
 });
 
-function runeToEmbed (runeObject) {
-  
-  const embed = new MessageEmbed()
-  .setTitle(runeObject.name)
-  .setImage(runeObject.imgURL)
-  .setURL(runeObject.descURL);
+function runeToEmbed (runeObject, inputMessage) {
+    
+  const embed = new MessageEmbed(inputMessage, {
+    "title" : runeObject.name,
+    "image" : runeObject.imgURL,
+    "url"   : runeObject.descURL
+  });
+
 
   return embed;
-}
+};
 
 // Initialize bot by connecting to the server
 try {
