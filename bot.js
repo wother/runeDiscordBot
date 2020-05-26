@@ -29,25 +29,25 @@ client.on('message', msg => {
   } else if (msg.content === '!cast') {
     let runeEmbed = runeToEmbed(randomRune(1), msg);
 
-    msg.channel.send("Your Rune:", runeEmbed);
+    msg.channel.send({ embed : runeEmbed });
 
   } else if (msg.content === '!castone') {
     let runeEmbed = runeToEmbed(randomRune(1), msg);
 
-    msg.channel.send("One Rune:", runeEmbed);
+    msg.channel.send({ embed : runeEmbed });
 
   } else if (msg.content === '!castthree') {
     let runeArray = randomRune(3);
     runeArray.forEach(runeObj =>{
 
-      msg.channel.send("Pull:", runeToEmbed(runeObj, msg));
+      msg.channel.send({ embed :  runeToEmbed(runeObj, msg) });
 
     });
   } else if (msg.content === '!castfive') {
     let runeArray = randomRune(5);
     runeArray.forEach(runeObj =>{
 
-      msg.channel.send("Pull:", runeToEmbed(runeObj, msg));
+      msg.channel.send({ embed :  runeToEmbed(runeObj, msg) });
       
     });
   }
@@ -55,14 +55,12 @@ client.on('message', msg => {
 });
 
 function runeToEmbed (runeObject, inputMessage) {
-    
+
   const embed = new MessageEmbed(inputMessage, {
     "title" : runeObject.name,
     "url"   : runeObject.descURL,
     "image" : {
-      "url"     : runeObject.imgURL,
-      "height"  : 100,
-      "width"   : 100
+      "url"     : runeObject.imgURL
     }
   });
 
