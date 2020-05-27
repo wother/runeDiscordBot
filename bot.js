@@ -7,6 +7,7 @@ const client = new Client();
 
 // workers imports
 const randomRune = require('./workers/runes.js');
+const parseMessage = require("./workers/commandStringParse.js");
 
 // Event listener when a user connected to the server.
 client.on('ready', () => {
@@ -18,43 +19,17 @@ client.on('ready', () => {
 
 // Event listener when a user sends a message in the chat.
 client.on('message', msg => {
-
+  // TODO remove debug code
+  // console.log(`username is ${client.user.username}`);
   // We check the message content and parse it
-  if (msg.content === '!help') {
-    let helpString = `
-    The Rune Secrets Bot will draw runes for you from the elder Futhark.\n
-    Commands are: \n
-    **!cast** or **!castone** for a single rune casting\n
-    **!castthree** for a three rune casting\n
-    **!castfive** for a five rune casting (careful...)
-    `;
-    msg.channel.send(helpString);
-  } else if (msg.content === '!cast') {
-    let runeEmbed = runeToEmbed(randomRune(1), msg);
-
-    msg.channel.send({ embed : runeEmbed });
-
-  } else if (msg.content === '!castone') {
-    let runeEmbed = runeToEmbed(randomRune(1), msg);
-
-    msg.channel.send({ embed : runeEmbed });
-
-  } else if (msg.content === '!castthree') {
-    let runeArray = randomRune(3);
-    runeArray.forEach(runeObj =>{
-
-      msg.channel.send({ embed :  runeToEmbed(runeObj, msg) });
-
-    });
-  } else if (msg.content === '!castfive') {
-    let runeArray = randomRune(5);
-    runeArray.forEach(runeObj =>{
-
-      msg.channel.send({ embed :  runeToEmbed(runeObj, msg) });
-      
-    });
+  
+  let parsedMessage = parseMessage(msg.content);
+  if (parsedMessage && parsedMessage.type === "text") {
+    msg.channel.send(parsedMessage.content);
+  } else if (parsedMessage && parsedMessage.type === "embed") {
+    let runeEmbed = runeToEmbed(parsedMessage.content, msg);
+    msg.channel.send({ embed : runeEmbed});
   }
-
 });
 
 function runeToEmbed (runeObject, inputMessage) {

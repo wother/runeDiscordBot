@@ -12,15 +12,33 @@ function randomRune(inputNumber) {
         case 1:
             output = genRuneObject(randomFromArray(futharkArray));
             break;
+        case 2:
         case 3:
-            output = numUniqueRunes(3);
-            break;
+        case 4:
         case 5:
-            output = numUniqueRunes(5);
+            output = numUniqueRunes(inputNumber);
             break;
     }
 
     return output;
+}
+
+function runeInfo (inputRuneName) {
+    // we want to ensure that the rune in question exists in the Futhark(array).
+    // Otherwise we drop through returning nothing.
+    if (futharkArray.includes(inputRuneName)){
+        return genRuneObject(inputRuneName);
+    } else if(inputRuneName === "names") {
+        let formattedRuneString = "";
+        futharkArray.forEach(runeName =>{
+            formattedRuneString += `${runeName} \n`;
+        })
+        return formattedRuneString;
+    }
+}
+
+function isRuneName(inputString) {
+    return futharkArray.includes(inputString);
 }
 
 const futharkArray = [
@@ -79,4 +97,4 @@ function numUniqueRunes(inputNumber) {
     return output;
 }
 
-module.exports = randomRune;
+module.exports = {randomRune, runeInfo, isRuneName};
