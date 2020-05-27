@@ -11,6 +11,9 @@ const randomRune = require('./workers/runes.js');
 // Event listener when a user connected to the server.
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  client.user.setPresence({ game: { name: '!help for commands' , type: 'LISTENING' }, status: 'active' })
+    .then(console.log)
+    .catch(console.error);
 });
 
 // Event listener when a user sends a message in the chat.
