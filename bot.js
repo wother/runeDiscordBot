@@ -29,6 +29,10 @@ client.on('message', msg => {
   } else if (parsedMessage && parsedMessage.type === "embed") {
     let runeEmbed = runeToEmbed(parsedMessage.content, msg);
     msg.channel.send({ embed : runeEmbed});
+  } else if (parsedMessage && parsedMessage.type === "runeArray") {
+    parsedMessage.content.forEach(runeObj => {
+      msg.channel.send({"embed": runeToEmbed(runeObj, msg)});
+    });
   }
 });
 
