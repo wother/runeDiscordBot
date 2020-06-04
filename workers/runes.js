@@ -26,6 +26,7 @@ function randomRune(inputNumber) {
 function runeInfo (inputRuneName) {
     // we want to ensure that the rune in question exists in the Futhark(array).
     // Otherwise we drop through returning nothing.
+    // TODO: meaningful error text if falure to find rune name.
     if (futharkArray.includes(inputRuneName)){
         return genRuneObject(inputRuneName);
     } else if(inputRuneName === "names") {
