@@ -4,24 +4,21 @@
  * parsing our commands and syntax.
  */
 
+// The Regular Expression to test if a string has brackets in it.
+const BRACKET_REGEX = /([\[\]])\w*/g;
+
 const StringWorkers = {
     hasBrackets : (testString) => {
-        let regExp = /([\[\]])\w*/g;
-        return regExp.test(testString);
+        return BRACKET_REGEX.test(testString);
     },
     removeBrackets : (inputTestString) => {
         let output = "";
-        let regExp = /([\[\]])\w*/g;
-        // if (hasBrackets(inputTestString)) {
-            let strArray = inputTestString.split("");
-            strArray.forEach(stringChar => {
-                if (!regExp.test(stringChar)){
-                    output += stringChar;
-                }
-            })
-        // } else {
-        //     output = inputTestString;
-        // }
+        let strArray = inputTestString.split("");
+        strArray.forEach(stringChar => {
+            if (!BRACKET_REGEX.test(stringChar)){
+                output += stringChar;
+            }
+        });
         return output;
     },
     numStringToInt : (numberString) => {

@@ -5,7 +5,7 @@
  * runic object (or objects) requested.
  */
 
-const { randomRune, runeInfo, isRuneName } = require("./runes.js");
+const { randomRune, runeInfo, isRuneName, genInfoLink } = require("./runes.js");
 const StringWorkers = require("./stringWorkers.js");
 
 // Constants
@@ -15,8 +15,6 @@ const MAX_VERB_LENGTH = 4;
 
 function parseMessage(inputMessageString) {
     if (isCommandToBot(inputMessageString)) {
-        // TODO: remove debug code:
-        // console.log(`Parsing command ${inputMessageString}`);
         // Slice the command indicator off, as it is no longer needed.
         // Command indicators are the first character in the string.
         let stringToParse = inputMessageString.slice(1);
@@ -60,12 +58,14 @@ function parseVerb(inputStringArr) {
             output = { "content" : randomRune(1), "type": "embed" };
         } else if (verb.length > MAX_VERB_LENGTH || inputStringArr.length > 1) {
             let getRuneNumberString = "";
+            
             // Testing for brackets.
             if (StringWorkers.hasBrackets(verb)) {
                 verb = StringWorkers.removeBrackets(verb);
             } else if (inputStringArr[1] && StringWorkers.hasBrackets(inputStringArr[1])) {
                 inputStringArr[1] = StringWorkers.removeBrackets(inputStringArr[1]);
             }
+
             // Parsing Numbers
             if (verb.length > MAX_VERB_LENGTH) {
                 getRuneNumberString = verb.substr(MAX_VERB_LENGTH).trim();
@@ -76,7 +76,7 @@ function parseVerb(inputStringArr) {
         }
     } else if (verb.startsWith("info")) {
         // TODO: Link instead of embed
-        output = getRune(inputStringArr[1] || verb.substr(4).trim());;
+        output = getRune(inputStringArr[1] || verb.substr(4).trim());
     } else if (verb.startsWith("uptime")) {
         let uptimeString = `All **you** need to know is I am online.`;
         output = { "content": uptimeString, "type": "text"};
@@ -84,7 +84,7 @@ function parseVerb(inputStringArr) {
     return output;
 }
 
-function getRune(inputString){
+function getRune (inputString) {
     if (NUMBER_STRINGS_ARRAY.includes(inputString)) {
         if (inputString === "one") {
             return {"content": randomRune(StringWorkers.numStringToInt(inputString)), "type" : "embed"};
