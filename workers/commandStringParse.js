@@ -5,7 +5,7 @@
  * runic object (or objects) requested.
  */
 
-const { randomRune, runeInfo, isRuneName, genInfoLink } = require("./runes.js");
+const { randomRune, runeInfo, isRuneName, runeInfoImage } = require("./runes.js");
 const StringWorkers = require("./stringWorkers.js");
 
 // Constants
@@ -72,11 +72,10 @@ function parseVerb(inputStringArr) {
             } else  if (inputStringArr[1] && verb.length === MAX_VERB_LENGTH) {
                 getRuneNumberString = inputStringArr[1];
             }
-            output = getRune(getRuneNumberString);
+            output = getRune(getRuneNumberString, false);
         }
     } else if (verb.startsWith("info")) {
-        // TODO: Link instead of embed
-        output = getRune(inputStringArr[1] || verb.substr(4).trim());
+        output = getRune(inputStringArr[1] || verb.substr(4).trim(), true);
     } else if (verb.startsWith("uptime")) {
         let uptimeString = `All **you** need to know is I am online.`;
         output = { "content": uptimeString, "type": "text"};
@@ -84,18 +83,34 @@ function parseVerb(inputStringArr) {
     return output;
 }
 
-function getRune (inputString) {
+function getRune (inputString, infoBoolean) {
     if (NUMBER_STRINGS_ARRAY.includes(inputString)) {
         if (inputString === "one") {
             return {"content": randomRune(StringWorkers.numStringToInt(inputString)), "type" : "embed"};
         } else {
             return { "content" : randomRune(StringWorkers.numStringToInt(inputString)), "type": "runeArray"};
         }
-    } else if (isRuneName(inputString)){
+    } else if (isRuneName(inputString) && !infoBoolean) {
         return { "content" : runeInfo(inputString), "type": "embed"};
-    } else if (inputString === "allrunes" || inputString === "names" || inputString === "all" || inputString === "list") {
+    } else if (isRuneName(inputString) && infoBoolean) {
+        return {"content" : runeInfoImage(inputString), "type": "embed" }
+    } else if (listCommand(inputString)) {
         return { "content" : runeInfo("names"), "type" : "text" };
     }
+}
+
+function listCommand (listTestString) {
+    let output = false;
+    switch (listTestString) {
+        case "allrunes":
+        case "names":
+        case "all":
+        case "list":
+            output = true;
+            break;
+        default: output = false;
+    }
+    return output;
 }
 
 module.exports = parseMessage;

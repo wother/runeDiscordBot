@@ -78,8 +78,21 @@ function genRuneObject(nameInput) {
     return output;
 }
 
+function runeInfoImage(nameInput) {
+    let output = {
+        "name": nameInput,
+        "imgURL": getInfoImage(nameInput),
+        "descURL": genInfoLink(nameInput)
+    }
+    return output;
+}
+
 function genImgLink(runeName) {
     return `https://runesecrets.com/img/${runeName}-100x100.gif`;
+}
+
+function getInfoImage(runeName) {
+    return `https://runesecrets.com/img/info-${runeName}.gif`;
 }
 
 function genInfoLink(runeName) {
@@ -99,4 +112,4 @@ function numUniqueRunes(inputNumber) {
     return output;
 }
 
-module.exports = { randomRune, runeInfo, isRuneName, genInfoLink };
+module.exports = { randomRune, runeInfo, isRuneName, genInfoLink, runeInfoImage };
