@@ -5,16 +5,16 @@
  * runic object (or objects) requested.
  */
 
-const { randomRune, runeInfo, isRuneName } = require("./runes.js");
+const { randomRune, runeInfo, isRuneName, runeInfoImage } = require("./runes.js");
+const StringWorkers = require("./stringWorkers.js");
 
 // Constants
 const COMMAND_INDICATOR_CHARACTER = "!";
 const NUMBER_STRINGS_ARRAY = ["one", "two", "three", "four", "five"];
+const MAX_VERB_LENGTH = 4;
 
 function parseMessage(inputMessageString) {
     if (isCommandToBot(inputMessageString)) {
-        // TODO: remove debug code:
-        // console.log(`Parsing command ${inputMessageString}`);
         // Slice the command indicator off, as it is no longer needed.
         // Command indicators are the first character in the string.
         let stringToParse = inputMessageString.slice(1);
@@ -56,17 +56,26 @@ function parseVerb(inputStringArr) {
 
         if ((verb === "cast" || verb === "draw" || verb === "rune") && !inputStringArr[1]) {
             output = { "content" : randomRune(1), "type": "embed" };
-        } else if (verb.length > 4 || inputStringArr.length > 1) {
+        } else if (verb.length > MAX_VERB_LENGTH || inputStringArr.length > 1) {
             let getRuneNumberString = "";
-            if (verb.length > 4) {
-                getRuneNumberString = verb.substr(4).trim();
-            } else  if (inputStringArr[1] && verb.length === 4) {
+            
+            // Testing for brackets.
+            if (StringWorkers.hasBrackets(verb)) {
+                verb = StringWorkers.removeBrackets(verb);
+            } else if (inputStringArr[1] && StringWorkers.hasBrackets(inputStringArr[1])) {
+                inputStringArr[1] = StringWorkers.removeBrackets(inputStringArr[1]);
+            }
+
+            // Parsing Numbers
+            if (verb.length > MAX_VERB_LENGTH) {
+                getRuneNumberString = verb.substr(MAX_VERB_LENGTH).trim();
+            } else  if (inputStringArr[1] && verb.length === MAX_VERB_LENGTH) {
                 getRuneNumberString = inputStringArr[1];
             }
-            output = getRune(getRuneNumberString);
+            output = getRune(getRuneNumberString, false);
         }
     } else if (verb.startsWith("info")) {
-        output = getRune(inputStringArr[1] || verb.substr(4).trim());;
+        output = getRune(inputStringArr[1] || verb.substr(4).trim(), true);
     } else if (verb.startsWith("uptime")) {
         let uptimeString = `All **you** need to know is I am online.`;
         output = { "content": uptimeString, "type": "text"};
@@ -74,41 +83,32 @@ function parseVerb(inputStringArr) {
     return output;
 }
 
-function getRune(inputString){
+function getRune (inputString, infoBoolean) {
     if (NUMBER_STRINGS_ARRAY.includes(inputString)) {
         if (inputString === "one") {
-            return {"content": randomRune(numStringToInt(inputString)), "type" : "embed"};
+            return {"content": randomRune(StringWorkers.numStringToInt(inputString)), "type" : "embed"};
         } else {
-            return { "content" : randomRune(numStringToInt(inputString)), "type": "runeArray"};
+            return { "content" : randomRune(StringWorkers.numStringToInt(inputString)), "type": "runeArray"};
         }
-    } else if (isRuneName(inputString)){
+    } else if (isRuneName(inputString) && !infoBoolean) {
         return { "content" : runeInfo(inputString), "type": "embed"};
-    } else if (inputString === "allrunes" || inputString === "names" || inputString === "all" || inputString === "list") {
+    } else if (isRuneName(inputString) && infoBoolean) {
+        return {"content" : runeInfoImage(inputString), "type": "embed" }
+    } else if (listCommand(inputString)) {
         return { "content" : runeInfo("names"), "type" : "text" };
     }
 }
 
-function numStringToInt(numberString) {
-    let output = 1;
-    // Sorry... I am baking english into the bot.
-    switch (numberString) {
-        case "one":
-            output = 1;
+function listCommand (listTestString) {
+    let output = false;
+    switch (listTestString) {
+        case "allrunes":
+        case "names":
+        case "all":
+        case "list":
+            output = true;
             break;
-        case "two":
-            output = 2;
-            break;
-        case "three":
-            output = 3;
-            break;
-        case "four":
-            output = 4;
-            break;
-        case "five":
-            output = 5;
-            break;
-        default:
-            break;
+        default: output = false;
     }
     return output;
 }
