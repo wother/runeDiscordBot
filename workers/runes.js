@@ -79,8 +79,9 @@ function genRuneObject(nameInput) {
 }
 
 function runeInfoImage(nameInput) {
+    let infoNameString = `${nameInput} information page.`
     let output = {
-        "name": nameInput,
+        "name": infoNameString,
         "imgURL": getInfoImage(nameInput),
         "descURL": genInfoLink(nameInput)
     }
