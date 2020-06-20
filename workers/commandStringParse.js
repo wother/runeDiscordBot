@@ -47,7 +47,7 @@ function parseVerb(inputStringArr) {
             **!cast five** for a five rune casting (careful...)\n
             **!info allrunes** or **names** or **all** or **list** for a list of all the rune names.\n
             **!info [runeName]** for information on a specific Rune.\n
-            You can also use "cast" for "rune" or "draw" above.
+            You can also use "rune" or "draw" in place of "cast" above.
             `;
         let outputObj = { "content": helpString, "type": "text"};
         return outputObj;

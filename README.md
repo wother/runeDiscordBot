@@ -2,7 +2,11 @@
 
 Usage:
 
-- `!draw` [#] draw and display this many runes, default is one
+Add the bot to your server with [this link](https://discord.com/api/oauth2/authorize?client_id=714237973486633031&permissions=18432&scope=bot).
+
+- `!help` for printing help text and command list.
+- `!draw [number]`  draw and display this many runes, default is one
+- `!list` gives you a referance for rune names, alphabetically.
 - `!lookup` [runeName] fetches the meaning for a rune from the Rune Secrets Site
 
 Patronage:
