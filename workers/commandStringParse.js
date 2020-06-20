@@ -19,7 +19,8 @@ function parseMessage(inputMessageString) {
         // Command indicators are the first character in the string.
         let stringToParse = inputMessageString.slice(1);
         // snag an Array of the whole parsed message, split on spaces.
-        let inputMessageArr = stringToParse.split(" ");
+        // also drop it to lowercase.
+        let inputMessageArr = stringToParse.toLowerCase().split(" ");
 
         return parseVerb(inputMessageArr);
     }

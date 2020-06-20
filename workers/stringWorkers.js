@@ -44,6 +44,11 @@ const StringWorkers = {
                 break;
         }
         return output;
+    },
+    capitalize : (inputString) => {
+        let snippedStr = inputString.substr(1).toLowerCase(); 
+        let firstLetter = inputString.charAt(0).toString().toUpperCase();
+        return firstLetter + snippedStr;
     }
 }
 
