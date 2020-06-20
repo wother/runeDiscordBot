@@ -19,8 +19,7 @@ client.on('ready', () => {
 
 // Event listener when a user sends a message in the chat.
 client.on('message', msg => {
-  // TODO remove debug code
-  // console.log(`username is ${client.user.username}`);
+
   // We check the message content and parse it
   
   let parsedMessage = parseMessage(msg.content);
