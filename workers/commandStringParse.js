@@ -67,7 +67,7 @@ function parseVerb(inputStringArr) {
                 inputStringArr[1] = StringWorkers.removeBrackets(inputStringArr[1]);
             }
 
-            // Parsing Numbers
+            // Parsing Number Strings
             if (verb.length > MAX_VERB_LENGTH) {
                 getRuneNumberString = verb.substr(MAX_VERB_LENGTH).trim();
             } else  if (inputStringArr[1] && verb.length === MAX_VERB_LENGTH) {
@@ -79,7 +79,7 @@ function parseVerb(inputStringArr) {
         output = getRune(inputStringArr[1] || verb.substr(4).trim(), true);
     } else if (verb.startsWith("uptime")) {
         let uptimeString = `All **you** need to know is I am online.`;
-        output = { "content": uptimeString, "type": "text"};
+        output = { "content" : uptimeString, "type": "text"};
     }
     return output;
 }
@@ -87,16 +87,44 @@ function parseVerb(inputStringArr) {
 function getRune (inputString, infoBoolean) {
     if (NUMBER_STRINGS_ARRAY.includes(inputString)) {
         if (inputString === "one") {
-            return {"content": randomRune(StringWorkers.numStringToInt(inputString)), "type" : "embed"};
+            return { 
+                "content" : randomRune(StringWorkers.numStringToInt(inputString)), 
+                "type" : "embed"
+            };
         } else {
-            return { "content" : randomRune(StringWorkers.numStringToInt(inputString)), "type": "runeArray"};
+            return { 
+                "content" : randomRune(StringWorkers.numStringToInt(inputString)), 
+                "type": "runeArray"
+            };
+        }
+    } else if (StringWorkers.isNumber(inputString)) {
+        let inputNumber = Number.parseInt(inputString);
+        if (inputNumber === 1) {
+            return { 
+                "content" : randomRune(inputNumber), 
+                "type" : "embed"
+            };
+        } else {
+            return { 
+                "content" : randomRune(inputNumber), 
+                "type": "runeArray"
+            };
         }
     } else if (isRuneName(inputString) && !infoBoolean) {
-        return { "content" : runeInfo(inputString), "type": "embed"};
+        return { 
+            "content" : runeInfo(inputString), 
+            "type": "embed"
+        };
     } else if (isRuneName(inputString) && infoBoolean) {
-        return {"content" : runeInfoImage(inputString), "type": "embed" }
+        return { 
+            "content" : runeInfoImage(inputString), 
+            "type": "embed" 
+        };
     } else if (listCommand(inputString)) {
-        return { "content" : runeInfo("names"), "type" : "text" };
+        return { 
+            "content" : runeInfo("names"), 
+            "type" : "text" 
+        };
     }
 }
 

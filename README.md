@@ -1,6 +1,6 @@
 ## Rune Draw Bot for Discord ##
 
-Usage:
+### Usage: ###
 
 Add the bot to your server with [this link](https://discord.com/api/oauth2/authorize?client_id=714237973486633031&permissions=18432&scope=bot).
 
@@ -9,6 +9,12 @@ Add the bot to your server with [this link](https://discord.com/api/oauth2/autho
 - `!list` gives you a referance for rune names, alphabetically.
 - `!lookup` [runeName] fetches the meaning for a rune from the Rune Secrets Site
 
-Patronage:
+### Patronage: ###
 
 Please consider supporting [Rune secrets on Patreon](https://patreon.com/tyriel)
+
+## LICENCE ##
+
+This code repository is covered under the MIT Licence [available here](./LICENCE)
+
+Copyright © 2020 Carter Foulger

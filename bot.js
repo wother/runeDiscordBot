@@ -6,10 +6,9 @@ const { Client, MessageEmbed } = require('discord.js');
 const client = new Client();
 
 // workers imports
-const randomRune = require('./workers/runes.js');
 const parseMessage = require("./workers/commandStringParse.js");
 
-// Event listener when a user connected to the server.
+// Event listener when bot connects to the server.
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   client.user.setPresence({ game: { name: '!help for commands' , type: 'LISTENING' }, status: 'active' })
