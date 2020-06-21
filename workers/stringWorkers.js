@@ -6,6 +6,7 @@
 
 // The Regular Expression to test if a string has brackets in it.
 const BRACKET_REGEX = /([\[\]])\w*/g;
+const NUMBER_REGEX = /[\d]/g;
 
 const StringWorkers = {
     hasBrackets : (testString) => {
@@ -49,6 +50,9 @@ const StringWorkers = {
         let snippedStr = inputString.substr(1).toLowerCase(); 
         let firstLetter = inputString.charAt(0).toString().toUpperCase();
         return firstLetter + snippedStr;
+    },
+    isNumber : (inputNumberString) => {
+        return NUMBER_REGEX.test(inputNumberString); 
     }
 }
 
