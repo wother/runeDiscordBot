@@ -78,6 +78,9 @@ function parseVerb(inputStringArr) {
     } else if (verb.startsWith("info")) {
         // TODO: Parse Brackets as well.
         let infoInput = inputStringArr[1] || verb.substr(4).trim();
+        if (StringWorkers.hasBrackets(infoInput)) {
+            infoInput = StringWorkers.removeBrackets(infoInput);
+        }        
         if (StringWorkers.hasColon(infoInput)) {
             console.log("Found a colon!");
             infoInput = StringWorkers.removeColons(infoInput);
