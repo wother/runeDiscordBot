@@ -76,7 +76,13 @@ function parseVerb(inputStringArr) {
             output = getRune(getRuneNumberString, false);
         }
     } else if (verb.startsWith("info")) {
-        output = getRune(inputStringArr[1] || verb.substr(4).trim(), true);
+        // TODO: Parse Brackets as well.
+        let infoInput = inputStringArr[1] || verb.substr(4).trim();
+        if (StringWorkers.hasColon(infoInput)) {
+            console.log("Found a colon!");
+            infoInput = StringWorkers.removeColons(infoInput);
+        }
+        output = getRune(infoInput, true);
     } else if (verb.startsWith("uptime")) {
         let uptimeString = `All **you** need to know is I am online.`;
         output = { "content" : uptimeString, "type": "text"};

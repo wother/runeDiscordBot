@@ -7,6 +7,7 @@
 // The Regular Expression to test if a string has brackets in it.
 const BRACKET_REGEX = /([\[\]])\w*/g;
 const NUMBER_REGEX = /[\d]/g;
+const COLON_REGEX = /([\:])\w*/g;
 
 const StringWorkers = {
     hasBrackets : (testString) => {
@@ -17,6 +18,19 @@ const StringWorkers = {
         let strArray = inputTestString.split("");
         strArray.forEach(stringChar => {
             if (!BRACKET_REGEX.test(stringChar)){
+                output += stringChar;
+            }
+        });
+        return output;
+    },
+    hasColon : (testString) => {
+        return COLON_REGEX.test(testString);
+    },
+    removeColons : (inputTestString) => {
+        let output = "";
+        let strArray = inputTestString.split("");
+        strArray.forEach(stringChar => {
+            if (!stringChar.includes(":")){
                 output += stringChar;
             }
         });
