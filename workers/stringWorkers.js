@@ -17,7 +17,7 @@ const StringWorkers = {
         let output = "";
         let strArray = inputTestString.split("");
         strArray.forEach(stringChar => {
-            if (!BRACKET_REGEX.test(stringChar)){
+            if (!(stringChar.includes("[") || stringChar.includes("]"))){
                 output += stringChar;
             }
         });
