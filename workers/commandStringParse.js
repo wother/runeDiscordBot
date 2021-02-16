@@ -82,7 +82,7 @@ function parseVerb(inputStringArr) {
             infoInput = StringWorkers.removeBrackets(infoInput);
         }        
         if (StringWorkers.hasColon(infoInput)) {
-            console.log("Found a colon!");
+            // console.log("Found a colon!");
             infoInput = StringWorkers.removeColons(infoInput);
         }
         output = getRune(infoInput, true);
@@ -150,5 +150,16 @@ function listCommand (listTestString) {
     }
     return output;
 }
+
+// https://discordapp.com/channels/@me/781659933258809384/781662187286298624
+// const emoji = <emojiText>.match(/(<a?:(.+):\d{17,18}>|:(.+):)/)[1];
+
+// regex breakdown:
+
+// a? - question mark after any character means optional
+// () - this will capture the name for later recognition
+// .+ - one or more of any character (the name)
+// \d{17,18} - the 17-18 digit ID
+// | - or operator- either use the format for the custom emoji or the unicode
 
 module.exports = parseMessage;
