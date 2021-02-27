@@ -7,10 +7,17 @@ const client = new Discord.Client();
 
 // workers imports
 const parseMessage = require("./workers/commandStringParse.js");
+const randomFromArray = require("./workers/randomizer.js");
+const thxResp = require("./workers/thanksResponses.js");
 
 // Event listener when bot connects to the server.
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  
+  if (process.env.KIND === "TESTING") {
+    console.log("We are in testing mode.");
+  }
+  
   client.user
     .setPresence({
       game: { name: "!help for commands", type: "LISTENING" },
@@ -43,7 +50,9 @@ client.on("message", (msg) => {
     parsedMessage.content.forEach((runeObj) => {
       msg.channel.send({"embed": runeToEmbed(runeObj, msg)});
     });
-  }
+  } else if (msg.mentions.members.has(client.user.id, {ignoreEveryone:true})) {
+    msg.channel.send(randomFromArray(thxResp));
+}
 });
 
 function runeToEmbed(runeObject, inputMessage) {
@@ -56,27 +65,6 @@ function runeToEmbed(runeObject, inputMessage) {
   });
 
   return embed;
-}
-
-// Test code, if werks, move to StringWorker
-function toUTF16(codePoint) {
-  var TEN_BITS = parseInt("1111111111", 2);
-  function u(codeUnit) {
-    return "\\u" + codeUnit.toString(16).toUpperCase();
-  }
-
-  if (codePoint <= 0xffff) {
-    return u(codePoint);
-  }
-  codePoint -= 0x10000;
-
-  // Shift right to get to most significant 10 bits
-  var leadSurrogate = 0xd800 + (codePoint >> 10);
-
-  // Mask to get least significant 10 bits
-  var tailSurrogate = 0xdc00 + (codePoint & TEN_BITS);
-
-  return u(leadSurrogate) + u(tailSurrogate);
 }
 
 // Initialize bot by connecting to the server
