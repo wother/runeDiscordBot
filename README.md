@@ -17,4 +17,4 @@ Please consider supporting [Rune secrets on Patreon](https://patreon.com/tyriel)
 
 This code repository is covered under the MIT Licence [available here](./LICENCE)
 
-Copyright © 2020 Carter Foulger
+Copyright © 2021
