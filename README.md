@@ -4,6 +4,10 @@
 
 Add the bot to your server with [this link](https://discord.com/api/oauth2/authorize?client_id=714237973486633031&permissions=18432&scope=bot).
 
+You will also need to put your token into the `env` file in the root of the project,
+rename it to `.env` to ensure it is covered under the `.gitignore` and you don't
+publicise the token.
+
 - `!help` for printing help text and command list.
 - `!draw [number]`  draw and display this many runes, default is one
 - `!list` gives you a referance for rune names, alphabetically.
