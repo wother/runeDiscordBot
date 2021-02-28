@@ -31,15 +31,6 @@ client.on("ready", () => {
 client.on("message", (msg) => {
   // We check the message content and parse it
 
-  // let emoji = msg.match(/(<a?:(.+):\d{17,18}>|:(.+):)/)[1];
-  // let testText = toUTF16(msg.content.codePointAt(0));
-  // let nativeMessage = msg;
-  // console.log(testText);
-  // testText.forEach((char) => {
-  //   // console.log(char.match(/(<a?:(.+):\d{17,18}>|:(.+):)/));
-  //   console.log(toUTF16(char.codePointAt(0)));
-  // });
-
   let parsedMessage = parseMessage(msg.content);
   if (parsedMessage && parsedMessage.type === "text") {
     msg.channel.send(parsedMessage.content);
