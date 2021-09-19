@@ -2,25 +2,45 @@
 require('dotenv').config();
 
 // Import libraries
-const { Client, MessageEmbed } = require('discord.js');
-const client = new Client();
+const { Client, Presence, Intents } = require('discord.js');
+const client = new Client(
+  {
+    intents : [
+      Intents.FLAGS.GUILDS,
+      Intents.FLAGS.GUILD_MESSAGES,
+      Intents.FLAGS.GUILD_PRESENCES
+    ]
+  }
+);
 
 // workers imports
 const randomRune = require('./workers/runes.js');
 const parseMessage = require("./workers/commandStringParse.js");
+const { runeToEmbed } = require("./workers/runeToEmbed.js");
 
 // Event listener when a user connected to the server.
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setPresence({ game: { name: '!help for commands' , type: 'LISTENING' }, status: 'active' })
-    .then(console.log("We are ready for input, Dave."))
-    .catch(console.error);
+  
+  let presenceObj = new Presence(client, {
+    user : client.user, 
+    game: { name: '!help for commands' , type: 'LISTENING' }, 
+    status: 'active' 
+  });
+  
+  // client.user.Presence(presenceObj)
+  //   .then(console.log("We are ready for input, Dave."))
+  //   .catch(console.error);
+  
+  // TODO Presence is broken fix it.
+  client.user.Presence = presenceObj;
+  
 });
 
 // Event listener when a user sends a message in the chat.
-client.on('message', msg => {
+client.on("messageCreate", async msg => {
   // TODO remove debug code
-  // console.log(`username is ${client.user.username}`);
+  console.log(`Message content: ${msg.content}`);
   // We check the message content and parse it
   
   let parsedMessage = parseMessage(msg.content);
@@ -35,19 +55,6 @@ client.on('message', msg => {
     });
   }
 });
-
-function runeToEmbed (runeObject, inputMessage) {
-
-  const embed = new MessageEmbed(inputMessage, {
-    "title" : runeObject.name,
-    "url"   : runeObject.descURL,
-    "image" : {
-      "url"     : runeObject.imgURL
-    }
-  });
-
-  return embed;
-};
 
 // Initialize bot by connecting to the server
 try {

@@ -1,4 +1,4 @@
-## Rune Draw Bot for Discord ##
+# Rune Draw Bot for Discord #
 
 Usage:
 

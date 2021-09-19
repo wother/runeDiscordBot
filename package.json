@@ -15,11 +15,11 @@
     "start": "node bot.js"
   },
   "dependencies": {
-    "discord.js": "^11.4.2",
+    "discord.js": "^13.1.0",
     "dotenv": "^8.1.0"
   },
   "engines": {
-    "node": "8.11.2"
+    "node": "^16.0.0"
   },
   "repository": {
     "type": "git",
