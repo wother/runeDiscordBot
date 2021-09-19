@@ -45,13 +45,19 @@ client.on("messageCreate", async msg => {
   
   let parsedMessage = parseMessage(msg.content);
   if (parsedMessage && parsedMessage.type === "text") {
-    msg.channel.send(parsedMessage.content);
+    msg.channel.send({
+      content : parsedMessage.content
+    });
   } else if (parsedMessage && parsedMessage.type === "embed") {
     let runeEmbed = runeToEmbed(parsedMessage.content, msg);
-    msg.channel.send({ embed : runeEmbed});
+    msg.channel.send({ 
+      embeds : [runeEmbed]
+    });
   } else if (parsedMessage && parsedMessage.type === "runeArray") {
     parsedMessage.content.forEach(runeObj => {
-      msg.channel.send({"embed": runeToEmbed(runeObj, msg)});
+      msg.channel.send({
+        embeds: runeToEmbed(runeObj, msg)
+      });
     });
   }
 });

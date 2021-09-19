@@ -1,23 +1,27 @@
 const { MessageEmbed, MessageButton } = require('discord.js');
 
-function runeToEmbed(runeObject, inputMessage) {
-
-  const embed = new MessageEmbed(inputMessage, {
-    "title": runeObject.name,
-    "url": runeObject.descURL,
-    "image": {
+function runeToEmbed(runeObject) {
+  const embed = new MessageEmbed({
+    title : runeObject.name,
+    url : runeObject.descURL,
+    image : {
       "url": runeObject.imgURL
     },
-    "buttons" : [runeLinkButton(runeObject.name, runeObject.descURL)]
+    buttons : [runeLinkButton(runeObject.name, runeObject.descURL)],
+    description : `You drew ${runeObject.name}`
   });
 
   return embed;
 }
-exports.runeToEmbed = runeToEmbed;
 
 function runeLinkButton (inputTitle, URLinput) {
-  let outputButton = new MessageButton();
-  outputButton.setLabel(inputTitle);
-  outputButton.setURL(URLinput);
+  let outputButton = new MessageButton(
+    {
+      label : inputTitle,
+      url : URLinput
+    }
+  );
   return outputButton;
 }
+
+exports.runeToEmbed = runeToEmbed;
