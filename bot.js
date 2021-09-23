@@ -16,7 +16,7 @@ const client = new Client(
 // workers imports
 const randomRune = require('./workers/runes.js');
 const parseMessage = require("./workers/commandStringParse.js");
-const { runeToEmbed } = require("./workers/runeToEmbed.js");
+const { runeToEmbed, runeToMessage } = require("./workers/runeToEmbed.js");
 
 // Event listener when a user connected to the server.
 client.on('ready', () => {
@@ -38,29 +38,27 @@ client.on('ready', () => {
 });
 
 // Event listener when a user sends a message in the chat.
-client.on("messageCreate", async msg => {
+client.on("messageCreate", msg => {
   // TODO remove debug code
   console.log(`Message content: ${msg.content}`);
-  // We check the message content and parse it
   
+  // We check the message content and parse it
   let parsedMessage = parseMessage(msg.content);
+  
   if (parsedMessage && parsedMessage.type === "text") {
     msg.channel.send({
       content : parsedMessage.content
     });
   } else if (parsedMessage && parsedMessage.type === "embed") {
-    let runeEmbed = runeToEmbed(parsedMessage.content, msg);
-    msg.channel.send({ 
-      embeds : [runeEmbed]
-    });
+    msg.channel.send(runeToMessage(parsedMessage.content));
   } else if (parsedMessage && parsedMessage.type === "runeArray") {
+    console.log("Rune Array Detected");
     parsedMessage.content.forEach(runeObj => {
-      msg.channel.send({
-        embeds: runeToEmbed(runeObj, msg)
+        msg.channel.send(runeToMessage(runeObj));
       });
-    });
+    }
   }
-});
+);
 
 // Initialize bot by connecting to the server
 try {
