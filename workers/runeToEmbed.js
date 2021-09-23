@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-
+const chunkArrayinGroupsWithCB = require('./arrayHelper.js');
 
 function runeToMessage (inputRuneObject) {
   let output = {
@@ -10,6 +10,23 @@ function runeToMessage (inputRuneObject) {
   return output;
 }
 
+function allRunesLinks(futharkArray) {
+  // hard limit of five by five here
+  // five Action Rows, with Five Buttons each
+  let output = {
+    ephemeral: true,
+    components : []
+  };
+  let runeButtonMatrix = chunkArrayinGroupsWithCB(futharkArray, 5, runeNameButton);
+  runeButtonMatrix.forEach(buttonArray => {
+    let messageRow = new MessageActionRow();
+    buttonArray.forEach(runeButton => {
+      messageRow.addComponents(runeButton);
+    });
+    output.components.push(messageRow);
+  });
+  return output;
+}
 
 function runeToEmbed(runeObject) {
   const embed = new MessageEmbed({
@@ -38,4 +55,12 @@ function runeLinkButton (inputTitle, URLinput) {
   return outputButton;
 }
 
-exports.runeToMessage = runeToMessage;
+function runeNameButton(name) {
+  let outputButton = new MessageButton()
+  .setLabel(name)
+  .setURL(genInfoLink(name))
+  .setStyle('LINK');
+return outputButton;
+}
+
+exports = { runeToMessage, allRunesLinks };

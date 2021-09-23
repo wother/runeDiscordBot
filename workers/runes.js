@@ -1,7 +1,8 @@
 /**
  * The place where the Futhark lives. Rune JSON and links to art are here.
  */
-const randomFromArray = require('./randomizer.js')
+const randomFromArray = require('./randomizer.js');
+const { allRunesLinks } = require('./runeToEmbed.js');
 
 const FUTHARK_NAMES_ARRAY = [
     "algiz",
@@ -57,11 +58,7 @@ function runeInfo(inputRuneName) {
     if (FUTHARK_NAMES_ARRAY.includes(inputRuneName)) {
         return genRuneObject(inputRuneName);
     } else if (inputRuneName === "names") {
-        let formattedRuneString = "";
-        FUTHARK_NAMES_ARRAY.forEach(runeName => {
-            formattedRuneString += `${runeName} \n`;
-        })
-        return formattedRuneString;
+        return allRunesLinks(FUTHARK_NAMES_ARRAY);
     }
 }
 
