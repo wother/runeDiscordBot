@@ -1,8 +1,6 @@
-// Run dotenv
-require('dotenv').config();
-
+import {} from 'dotenv/config.js';
 // Import libraries
-const { Client, Presence, Intents } = require('discord.js');
+import { Client, Presence, Intents } from 'discord.js';
 const client = new Client(
   {
     intents : [
@@ -14,9 +12,9 @@ const client = new Client(
 );
 
 // workers imports
-const randomRune = require('./workers/runes.js');
-const parseMessage = require("./workers/commandStringParse.js");
-const { runeToEmbed, runeToMessage } = require("./workers/runeToEmbed.js");
+import { allRunesLinks, runeToMessage } from "./workers/runeToEmbed.js";
+import { randomRune, getFutharkArray } from "./workers/runes.js";
+import { parseMessage } from "./workers/commandStringParse.js";
 
 // Event listener when a user connected to the server.
 client.on('ready', () => {
@@ -53,9 +51,7 @@ client.on("messageCreate", msg => {
     msg.channel.send(runeToMessage(parsedMessage.content));
   } else if (parsedMessage && parsedMessage.type === "runeArray") {
     console.log("Rune Array Detected");
-    parsedMessage.content.forEach(runeObj => {
-        msg.channel.send(runeToMessage(runeObj));
-      });
+    msg.channel.send(allRunesLinks(getFutharkArray()));
     }
   }
 );

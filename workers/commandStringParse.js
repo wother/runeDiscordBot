@@ -5,15 +5,15 @@
  * runic object (or objects) requested.
  */
 
-const { randomRune, runeInfo, isRuneName, runeInfoImage } = require("./runes.js");
-const StringWorkers = require("./stringWorkers.js");
+import { randomRune, runeInfo, isRuneName, runeInfoImage } from "./runes.js";
+import { hasBrackets, numStringToInt } from "./stringWorkers.js";
 
 // Constants
 const COMMAND_INDICATOR_CHARACTER = "!";
 const NUMBER_STRINGS_ARRAY = ["one", "two", "three", "four", "five"];
 const MAX_VERB_LENGTH = 4;
 
-function parseMessage(inputMessageString) {
+export function parseMessage(inputMessageString) {
     if (isCommandToBot(inputMessageString)) {
         // Slice the command indicator off, as it is no longer needed.
         // Command indicators are the first character in the string.
@@ -60,10 +60,10 @@ function parseVerb(inputStringArr) {
             let getRuneNumberString = "";
             
             // Testing for brackets.
-            if (StringWorkers.hasBrackets(verb)) {
-                verb = StringWorkers.removeBrackets(verb);
-            } else if (inputStringArr[1] && StringWorkers.hasBrackets(inputStringArr[1])) {
-                inputStringArr[1] = StringWorkers.removeBrackets(inputStringArr[1]);
+            if (hasBrackets(verb)) {
+                verb = removeBrackets(verb);
+            } else if (inputStringArr[1] && hasBrackets(inputStringArr[1])) {
+                inputStringArr[1] = removeBrackets(inputStringArr[1]);
             }
 
             // Parsing Numbers
@@ -86,9 +86,9 @@ function parseVerb(inputStringArr) {
 function getRune (inputString, infoBoolean) {
     if (NUMBER_STRINGS_ARRAY.includes(inputString)) {
         if (inputString === "one") {
-            return {"content": randomRune(StringWorkers.numStringToInt(inputString)), "type" : "embed"};
+            return {"content": randomRune(numStringToInt(inputString)), "type" : "embed"};
         } else {
-            return { "content" : randomRune(StringWorkers.numStringToInt(inputString)), "type": "runeArray"};
+            return { "content" : randomRune(numStringToInt(inputString)), "type": "runeArray"};
         }
     } else if (isRuneName(inputString) && !infoBoolean) {
         return { "content" : runeInfo(inputString), "type": "embed"};
@@ -112,5 +112,3 @@ function listCommand (listTestString) {
     }
     return output;
 }
-
-module.exports = parseMessage;
