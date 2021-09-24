@@ -5,15 +5,15 @@
  * runic object (or objects) requested.
  */
 
-const { randomRune, runeInfo, isRuneName, genInfoLink } = require("./runes.js");
-const StringWorkers = require("./stringWorkers.js");
+import { randomRune, runeInfo, isRuneName, runeInfoImage } from "./runes.js";
+import { hasBrackets, numStringToInt } from "./stringWorkers.js";
 
 // Constants
 const COMMAND_INDICATOR_CHARACTER = "!";
 const NUMBER_STRINGS_ARRAY = ["one", "two", "three", "four", "five"];
 const MAX_VERB_LENGTH = 4;
 
-function parseMessage(inputMessageString) {
+export function parseMessage(inputMessageString) {
     if (isCommandToBot(inputMessageString)) {
         // Slice the command indicator off, as it is no longer needed.
         // Command indicators are the first character in the string.
@@ -60,10 +60,10 @@ function parseVerb(inputStringArr) {
             let getRuneNumberString = "";
             
             // Testing for brackets.
-            if (StringWorkers.hasBrackets(verb)) {
-                verb = StringWorkers.removeBrackets(verb);
-            } else if (inputStringArr[1] && StringWorkers.hasBrackets(inputStringArr[1])) {
-                inputStringArr[1] = StringWorkers.removeBrackets(inputStringArr[1]);
+            if (hasBrackets(verb)) {
+                verb = removeBrackets(verb);
+            } else if (inputStringArr[1] && hasBrackets(inputStringArr[1])) {
+                inputStringArr[1] = removeBrackets(inputStringArr[1]);
             }
 
             // Parsing Numbers
@@ -72,11 +72,10 @@ function parseVerb(inputStringArr) {
             } else  if (inputStringArr[1] && verb.length === MAX_VERB_LENGTH) {
                 getRuneNumberString = inputStringArr[1];
             }
-            output = getRune(getRuneNumberString);
+            output = getRune(getRuneNumberString, false);
         }
     } else if (verb.startsWith("info")) {
-        // TODO: Link instead of embed
-        output = getRune(inputStringArr[1] || verb.substr(4).trim());
+        output = getRune(inputStringArr[1] || verb.substr(4).trim(), true);
     } else if (verb.startsWith("uptime")) {
         let uptimeString = `All **you** need to know is I am online.`;
         output = { "content": uptimeString, "type": "text"};
@@ -84,18 +83,32 @@ function parseVerb(inputStringArr) {
     return output;
 }
 
-function getRune (inputString) {
+function getRune (inputString, infoBoolean) {
     if (NUMBER_STRINGS_ARRAY.includes(inputString)) {
         if (inputString === "one") {
-            return {"content": randomRune(StringWorkers.numStringToInt(inputString)), "type" : "embed"};
+            return {"content": randomRune(numStringToInt(inputString)), "type" : "embed"};
         } else {
-            return { "content" : randomRune(StringWorkers.numStringToInt(inputString)), "type": "runeArray"};
+            return { "content" : randomRune(numStringToInt(inputString)), "type": "runeArray"};
         }
-    } else if (isRuneName(inputString)){
+    } else if (isRuneName(inputString) && !infoBoolean) {
         return { "content" : runeInfo(inputString), "type": "embed"};
-    } else if (inputString === "allrunes" || inputString === "names" || inputString === "all" || inputString === "list") {
+    } else if (isRuneName(inputString) && infoBoolean) {
+        return {"content" : runeInfoImage(inputString), "type": "embed" }
+    } else if (listCommand(inputString)) {
         return { "content" : runeInfo("names"), "type" : "text" };
     }
 }
 
-module.exports = parseMessage;
+function listCommand (listTestString) {
+    let output = false;
+    switch (listTestString) {
+        case "allrunes":
+        case "names":
+        case "all":
+        case "list":
+            output = true;
+            break;
+        default: output = false;
+    }
+    return output;
+}
