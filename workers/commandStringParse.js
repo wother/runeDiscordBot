@@ -46,17 +46,27 @@ function parseVerb(inputStringArr) {
             **!cast five** for a five rune casting (careful...)\n
             **!info allrunes** or **names** or **all** or **list** for a list of all the rune names.\n
             **!info [runeName]** for information on a specific Rune.\n
-            You can also use "cast" for "rune" or "draw" above.
+            "draw" "rune" and "cast" are synonymous above, eg !draw is the same as !cast ot !rune.
             `;
-        let outputObj = { "content": helpString, "type": "text"};
+        let outputObj = { 
+            "content": helpString,
+            "type": "text"
+        };
         return outputObj;
-    } else if (verb.startsWith("cast") ||
-        verb.startsWith("draw") ||
-        verb.startsWith("rune")) {
+    } else if ( verb.startsWith("cast") ||
+                verb.startsWith("draw") ||
+                verb.startsWith("rune")) {
 
-        if ((verb === "cast" || verb === "draw" || verb === "rune") && !inputStringArr[1]) {
-            output = { "content" : randomRune(1), "type": "embed" };
-        } else if (verb.length > MAX_VERB_LENGTH || inputStringArr.length > 1) {
+        if ((   verb === "cast" || 
+                verb === "draw" || 
+                verb === "rune") && 
+                !inputStringArr[1]) {
+            output = { 
+                "content" : randomRune(1), 
+                "type": "embed" 
+            };
+        } else if ( verb.length > MAX_VERB_LENGTH || 
+                    inputStringArr.length > 1) {
             let getRuneNumberString = "";
             
             // Testing for brackets.
@@ -86,16 +96,31 @@ function parseVerb(inputStringArr) {
 function getRune (inputString, infoBoolean) {
     if (NUMBER_STRINGS_ARRAY.includes(inputString)) {
         if (inputString === "one") {
-            return {"content": randomRune(numStringToInt(inputString)), "type" : "embed"};
+            return {
+                "content": randomRune(numStringToInt(inputString)), 
+                "type" : "embed"
+            };
         } else {
-            return { "content" : randomRune(numStringToInt(inputString)), "type": "runeArray"};
+            return { 
+                "content" : randomRune(numStringToInt(inputString)), 
+                "type": "runeArray"
+            };
         }
     } else if (isRuneName(inputString) && !infoBoolean) {
-        return { "content" : runeInfo(inputString), "type": "embed"};
+        return { 
+            "content" : runeInfo(inputString), 
+            "type": "embed"
+        };
     } else if (isRuneName(inputString) && infoBoolean) {
-        return {"content" : runeInfoImage(inputString), "type": "embed" }
+        return {
+            "content" : runeInfoImage(inputString), 
+            "type": "embed" 
+        }
     } else if (listCommand(inputString)) {
-        return { "content" : runeInfo("names"), "type" : "text" };
+        return { 
+            "content" : runeInfo("names"), 
+            "type" : "text" 
+        };
     }
 }
 

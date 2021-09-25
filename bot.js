@@ -51,8 +51,14 @@ client.on("messageCreate", msg => {
     msg.channel.send(runeToMessage(parsedMessage.content));
   } else if (parsedMessage && parsedMessage.type === "runeArray") {
     console.log("Rune Array Detected");
-    msg.channel.send(allRunesLinks(getFutharkArray()));
-    }
+    // Default Rune array
+    parsedMessage.content.forEach(runeObj => {
+      msg.channel.send(runeToMessage(runeObj));
+    });
+  } else if (parsedMessage && parsedMessage.type === "allRunesLinks") {
+    // All rune array
+    console.log("Oh, time for all the rune links.");
+  }
   }
 );
 
