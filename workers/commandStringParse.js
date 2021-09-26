@@ -38,15 +38,15 @@ function parseVerb(inputStringArr) {
     }
     // The verbs are what we tell the bot to do.
     if (verb.startsWith("help") || verb.startsWith("?") || (verb === "info" && !inputStringArr[1])) {
-        let helpString = `The Rune Secrets Bot will draw runes for you from the elder Futhark.\n
-            Commands are: \n
-            **!help** for this help text\n
-            **!cast** or **!cast one** for a single rune casting\n
-            **!cast three** for a three rune casting\n
-            **!cast five** for a five rune casting (careful...)\n
-            **!info allrunes** or **names** or **all** or **list** for a list of all the rune names.\n
-            **!info [runeName]** for information on a specific Rune.\n
-            "draw" "rune" and "cast" are synonymous above, eg !draw is the same as !cast ot !rune.
+        let helpString = `The Rune Secrets Bot will draw runes for you from the Elder Futhark.\n
+            **Commands are:** \n
+            \`!help\` for this help text\n
+            \`!cast\` or \`!cast one\` for a single rune casting\n
+            \`!cast three\` for a three rune casting\n
+            \`!cast five\` for a five rune casting (careful...)\n
+            \`!info allrunes\` or \`names\` or \`all\` or \`list\` for a list of all the rune names.\n
+            \`!info [runeName]\` for information on a specific Rune.\n
+            "draw" "rune" and "cast" are synonymous, eg: \`!draw\` is the same as \`!cast\` or \`!rune.\`
             `;
         let outputObj = { 
             "content": helpString,

@@ -12,8 +12,6 @@ export function runeToMessage (inputRuneObject) {
 }
 
 export function allRunesLinks(futharkArray) {
-  // hard limit of five by five here
-  // five Action Rows, with Five Buttons each
   let output = {
     ephemeral: true,
     components : []
