@@ -1,8 +1,8 @@
 /**
  * The place where the Futhark lives. Rune JSON and links to art are here.
  */
-const randomFromArray = require('./randomizer.js');
-const StringWorkers = require('./stringWorkers.js');
+import { randomFromArray } from './randomizer.js';
+import { allRunesLinks } from './runeToEmbed.js';
 
 const FUTHARK_NAMES_ARRAY = [
     "algiz",
@@ -31,7 +31,11 @@ const FUTHARK_NAMES_ARRAY = [
     "wunjo"
 ];
 
-function randomRune(inputNumber) {
+export function getFutharkArray() {
+    return FUTHARK_NAMES_ARRAY;
+}
+
+export function randomRune(inputNumber) {
     let output;
 
     // We generate an array of rune objects with name, hyperlink, and image.
@@ -51,7 +55,7 @@ function randomRune(inputNumber) {
     return output;
 }
 
-function runeInfo(inputRuneName) {
+export function runeInfo(inputRuneName) {
     // we want to ensure that the rune in question exists in the Futhark(array).
     // Otherwise we drop through returning nothing.
     
@@ -60,16 +64,11 @@ function runeInfo(inputRuneName) {
     if (FUTHARK_NAMES_ARRAY.includes(inputRuneName)) {
         return genRuneObject(inputRuneName);
     } else if (inputRuneName === "names") {
-        let formattedRuneString = "";
-        FUTHARK_NAMES_ARRAY.forEach(runeName => {
-            let properName = StringWorkers.capitalize(runeName);
-            formattedRuneString += `**${properName}**\n`;
-        });
-        return formattedRuneString;
+        return allRunesLinks(FUTHARK_NAMES_ARRAY);
     }
 }
 
-function isRuneName(inputString) {
+export function isRuneName(inputString) {
     return FUTHARK_NAMES_ARRAY.includes(inputString);
 }
 
@@ -82,9 +81,10 @@ function genRuneObject(nameInput) {
     return output;
 }
 
-function runeInfoImage(nameInput) {
+export function runeInfoImage(nameInput) {
+    let infoNameString = `${nameInput} information page.`
     let output = {
-        "name": nameInput,
+        "name": infoNameString,
         "imgURL": getInfoImage(nameInput),
         "descURL": genInfoLink(nameInput)
     }
@@ -95,11 +95,11 @@ function genImgLink(runeName) {
     return `https://runesecrets.com/img/${runeName}-100x100.gif`;
 }
 
-function getInfoImage(runeName) {
+export function getInfoImage(runeName) {
     return `https://runesecrets.com/img/info-${runeName}.gif`;
 }
 
-function genInfoLink(runeName) {
+export function genInfoLink(runeName) {
     return `https://runesecrets.com/rune-meanings/${runeName}`;
 }
 
@@ -115,5 +115,3 @@ function numUniqueRunes(inputNumber) {
     });
     return output;
 }
-
-module.exports = { randomRune, runeInfo, isRuneName, genInfoLink, runeInfoImage };

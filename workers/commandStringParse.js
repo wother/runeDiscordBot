@@ -5,15 +5,15 @@
  * runic object (or objects) requested.
  */
 
-const { randomRune, runeInfo, isRuneName, runeInfoImage } = require("./runes.js");
-const StringWorkers = require("./stringWorkers.js");
+import { randomRune, runeInfo, isRuneName, runeInfoImage } from "./runes.js";
+import { hasBrackets, numStringToInt } from "./stringWorkers.js";
 
 // Constants
 const COMMAND_INDICATOR_CHARACTER = "!";
 const NUMBER_STRINGS_ARRAY = ["one", "two", "three", "four", "five"];
 const MAX_VERB_LENGTH = 4;
 
-function parseMessage(inputMessageString) {
+export function parseMessage(inputMessageString) {
     if (isCommandToBot(inputMessageString)) {
         // Slice the command indicator off, as it is no longer needed.
         // Command indicators are the first character in the string.
@@ -39,32 +39,43 @@ function parseVerb(inputStringArr) {
     }
     // The verbs are what we tell the bot to do.
     if (verb.startsWith("help") || verb.startsWith("?") || (verb === "info" && !inputStringArr[1])) {
-        let helpString = `The Rune Secrets Bot will draw runes for you from the elder Futhark.\n
-            Commands are: \n
-            **!help** for this help text\n
-            **!cast** or **!cast one** for a single rune casting\n
-            **!cast three** for a three rune casting\n
-            **!cast five** for a five rune casting (careful...)\n
-            **!info allrunes** or **names** or **all** or **list** for a list of all the rune names.\n
-            **!info [runeName]** for information on a specific Rune.\n
-            You can also use "cast" for "rune" or "draw" above.
+        let helpString = `The Rune Secrets Bot will draw runes for you from the Elder Futhark.\n
+            **Commands are:** \n
+            \`!help\` for this help text\n
+            \`!cast\` or \`!cast one\` for a single rune casting\n
+            \`!cast three\` for a three rune casting\n
+            \`!cast five\` for a five rune casting (careful...)\n
+            \`!info allrunes\` or \`names\` or \`all\` or \`list\` for a list of all the rune names.\n
+            \`!info [runeName]\` for information on a specific Rune.\n
+            "draw" "rune" and "cast" are synonymous, eg: \`!draw\` is the same as \`!cast\` or \`!rune.\`
             `;
-        let outputObj = { "content": helpString, "type": "text"};
+        let outputObj = { 
+            "content": helpString,
+            "type": "text"
+        };
         return outputObj;
-    } else if (verb.startsWith("cast") ||
-        verb.startsWith("draw") ||
-        verb.startsWith("rune")) {
+    } else if ( verb.startsWith("cast") ||
+                verb.startsWith("draw") ||
+                verb.startsWith("rune")) {
 
-        if ((verb === "cast" || verb === "draw" || verb === "rune") && !inputStringArr[1]) {
-            output = { "content" : randomRune(1), "type": "embed" };
-        } else if (verb.length > MAX_VERB_LENGTH || inputStringArr.length > 1) {
+        if ((   verb === "cast" || 
+                verb === "draw" || 
+                verb === "rune") && 
+                !inputStringArr[1]) {
+            output = { 
+                "content" : randomRune(1), 
+                "type": "embed" 
+            };
+        } else if ( verb.length > MAX_VERB_LENGTH || 
+                    inputStringArr.length > 1) {
+            
             let getRuneNumberString = "";
             
             // Testing for brackets.
-            if (StringWorkers.hasBrackets(verb)) {
-                verb = StringWorkers.removeBrackets(verb);
-            } else if (inputStringArr[1] && StringWorkers.hasBrackets(inputStringArr[1])) {
-                inputStringArr[1] = StringWorkers.removeBrackets(inputStringArr[1]);
+            if (hasBrackets(verb)) {
+                verb = removeBrackets(verb);
+            } else if (inputStringArr[1] && hasBrackets(inputStringArr[1])) {
+                inputStringArr[1] = removeBrackets(inputStringArr[1]);
             }
 
             // Parsing Numbers
@@ -87,16 +98,31 @@ function parseVerb(inputStringArr) {
 function getRune (inputString, infoBoolean) {
     if (NUMBER_STRINGS_ARRAY.includes(inputString)) {
         if (inputString === "one") {
-            return {"content": randomRune(StringWorkers.numStringToInt(inputString)), "type" : "embed"};
+            return {
+                "content": randomRune(numStringToInt(inputString)), 
+                "type" : "embed"
+            };
         } else {
-            return { "content" : randomRune(StringWorkers.numStringToInt(inputString)), "type": "runeArray"};
+            return { 
+                "content" : randomRune(numStringToInt(inputString)), 
+                "type": "runeArray"
+            };
         }
     } else if (isRuneName(inputString) && !infoBoolean) {
-        return { "content" : runeInfo(inputString), "type": "embed"};
+        return { 
+            "content" : runeInfo(inputString), 
+            "type": "embed"
+        };
     } else if (isRuneName(inputString) && infoBoolean) {
-        return {"content" : runeInfoImage(inputString), "type": "embed" }
+        return {
+            "content" : runeInfoImage(inputString), 
+            "type": "embed" 
+        }
     } else if (listCommand(inputString)) {
-        return { "content" : runeInfo("names"), "type" : "text" };
+        return { 
+            "content" : runeInfo("names"),
+            "type" : "allRunesLinks" 
+        };
     }
 }
 
@@ -113,5 +139,3 @@ function listCommand (listTestString) {
     }
     return output;
 }
-
-module.exports = parseMessage;
