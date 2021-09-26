@@ -1,4 +1,4 @@
-## Rune Draw Bot for Discord ##
+# Rune Draw Bot for Discord #
 
 ### Usage: ###
 
@@ -21,4 +21,4 @@ Please consider supporting [Rune secrets on Patreon](https://patreon.com/tyriel)
 
 This code repository is covered under the MIT Licence [available here](./LICENCE)
 
-Copyright © 2021
+Please consider supporting [Rune secrets on Patreon](https://patreon.com/tyriel)
