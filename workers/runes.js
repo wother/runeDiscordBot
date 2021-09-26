@@ -58,7 +58,9 @@ export function randomRune(inputNumber) {
 export function runeInfo(inputRuneName) {
     // we want to ensure that the rune in question exists in the Futhark(array).
     // Otherwise we drop through returning nothing.
+    
     // TODO: meaningful error text if falure to find rune name.
+    
     if (FUTHARK_NAMES_ARRAY.includes(inputRuneName)) {
         return genRuneObject(inputRuneName);
     } else if (inputRuneName === "names") {
@@ -105,8 +107,8 @@ function numUniqueRunes(inputNumber) {
     let output = [];
     let futharkArrayCopy = [...FUTHARK_NAMES_ARRAY];
     let randoRunes = futharkArrayCopy.sort(() => {
-        return .5 - Math.random()
-    }).slice(0, inputNumber);
+            return .5 - Math.random()
+        }).slice(0, inputNumber);
 
     randoRunes.forEach(runeName => {
         output.push(genRuneObject(runeName));
