@@ -18,11 +18,11 @@ export function allRunesLinks(futharkArray) {
     ephemeral: true,
     components : []
   };
-  let runeButtonMatrix = chunkArrayinGroupsWithCB(futharkArray, 5, runeNameButton);
-  runeButtonMatrix.forEach(buttonArray => {
+  let runeNameMatrix = chunkArrayinGroupsWithCB(futharkArray, 5);
+  runeNameMatrix.forEach(nameArray => {
     let messageRow = new MessageActionRow();
-    buttonArray.forEach(runeButton => {
-      messageRow.addComponents(runeButton);
+    nameArray.forEach(runeName => {
+      messageRow.addComponents(runeNameButton(runeName));
     });
     output.components.push(messageRow);
   });

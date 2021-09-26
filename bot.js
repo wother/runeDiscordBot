@@ -58,6 +58,10 @@ client.on("messageCreate", msg => {
   } else if (parsedMessage && parsedMessage.type === "allRunesLinks") {
     // All rune array
     console.log("Oh, time for all the rune links.");
+    msg.channel.send({
+      content : "Here are links to descriptions and proper spelling for all the runes.",
+      components : parsedMessage.content.components
+    })
   }
   }
 );

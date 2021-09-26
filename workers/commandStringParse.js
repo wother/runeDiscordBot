@@ -67,6 +67,7 @@ function parseVerb(inputStringArr) {
             };
         } else if ( verb.length > MAX_VERB_LENGTH || 
                     inputStringArr.length > 1) {
+            
             let getRuneNumberString = "";
             
             // Testing for brackets.
@@ -118,8 +119,8 @@ function getRune (inputString, infoBoolean) {
         }
     } else if (listCommand(inputString)) {
         return { 
-            "content" : runeInfo("names"), 
-            "type" : "text" 
+            "content" : runeInfo("names"),
+            "type" : "allRunesLinks" 
         };
     }
 }
