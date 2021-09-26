@@ -12,17 +12,15 @@ export function runeToMessage (inputRuneObject) {
 }
 
 export function allRunesLinks(futharkArray) {
-  // hard limit of five by five here
-  // five Action Rows, with Five Buttons each
   let output = {
     ephemeral: true,
     components : []
   };
-  let runeButtonMatrix = chunkArrayinGroupsWithCB(futharkArray, 5, runeNameButton);
-  runeButtonMatrix.forEach(buttonArray => {
+  let runeNameMatrix = chunkArrayinGroupsWithCB(futharkArray, 5);
+  runeNameMatrix.forEach(nameArray => {
     let messageRow = new MessageActionRow();
-    buttonArray.forEach(runeButton => {
-      messageRow.addComponents(runeButton);
+    nameArray.forEach(runeName => {
+      messageRow.addComponents(runeNameButton(runeName));
     });
     output.components.push(messageRow);
   });
