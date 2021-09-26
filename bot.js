@@ -12,8 +12,7 @@ const client = new Client(
 );
 
 // workers imports
-import { allRunesLinks, runeToMessage } from "./workers/runeToEmbed.js";
-import { randomRune, getFutharkArray } from "./workers/runes.js";
+import { runeToMessage } from "./workers/runeToEmbed.js";
 import { parseMessage } from "./workers/commandStringParse.js";
 
 // Event listener when a user connected to the server.
@@ -25,21 +24,13 @@ client.on('ready', () => {
     game: { name: '!help for commands' , type: 'LISTENING' }, 
     status: 'active' 
   });
-  
-  // client.user.Presence(presenceObj)
-  //   .then(console.log("We are ready for input, Dave."))
-  //   .catch(console.error);
-  
-  // TODO Presence is broken fix it.
+  // TODO Presence is broken, fix it.
   client.user.Presence = presenceObj;
   
 });
 
 // Event listener when a user sends a message in the chat.
 client.on("messageCreate", msg => {
-  // TODO remove debug code
-  console.log(`Message content: ${msg.content}`);
-  
   // We check the message content and parse it
   let parsedMessage = parseMessage(msg.content);
   
@@ -50,9 +41,17 @@ client.on("messageCreate", msg => {
   } else if (parsedMessage && parsedMessage.type === "embed") {
     msg.channel.send(runeToMessage(parsedMessage.content));
   } else if (parsedMessage && parsedMessage.type === "runeArray") {
-    console.log("Rune Array Detected");
-    msg.channel.send(allRunesLinks(getFutharkArray()));
-    }
+    // Default Rune array
+    parsedMessage.content.forEach(runeObj => {
+      msg.channel.send(runeToMessage(runeObj));
+    });
+  } else if (parsedMessage && parsedMessage.type === "allRunesLinks") {
+    // All rune array
+    msg.channel.send({
+      content : "Here are links to descriptions and proper spelling for all the runes.",
+      components : parsedMessage.content.components
+    })
+  }
   }
 );
 
