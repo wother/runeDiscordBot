@@ -1,62 +1,59 @@
-// Run dotenv
-require("dotenv").config();
-
+import {} from 'dotenv/config.js';
 // Import libraries
-const Discord = require("discord.js");
-const client = new Discord.Client();
+import { Client, Presence, Intents } from 'discord.js';
+const client = new Client(
+  {
+    intents : [
+      Intents.FLAGS.GUILDS,
+      Intents.FLAGS.GUILD_MESSAGES,
+      Intents.FLAGS.GUILD_PRESENCES
+    ]
+  }
+);
 
 // workers imports
-const parseMessage = require("./workers/commandStringParse.js");
-const randomFromArray = require("./workers/randomizer.js");
-const thxResp = require("./workers/thanksResponses.js");
+import { runeToMessage } from "./workers/runeToEmbed.js";
+import { parseMessage } from "./workers/commandStringParse.js";
 
 // Event listener when bot connects to the server.
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
   
-  if (process.env.KIND === "TESTING") {
-    console.log("We are in testing mode.");
-  }
+  let presenceObj = new Presence(client, {
+    user : client.user, 
+    game: { name: '!help for commands' , type: 'LISTENING' }, 
+    status: 'active' 
+  });
+  // TODO Presence is broken, fix it.
+  client.user.Presence = presenceObj;
   
-  client.user
-    .setPresence({
-      game: { name: "!help for commands", type: "LISTENING" },
-      status: "active",
-    })
-    .then(console.log("We are ready for input, Dave."))
-    .catch(console.error);
 });
 
 // Event listener when a user sends a message in the chat.
-client.on("message", (msg) => {
+client.on("messageCreate", msg => {
   // We check the message content and parse it
-
   let parsedMessage = parseMessage(msg.content);
+  
   if (parsedMessage && parsedMessage.type === "text") {
-    msg.channel.send(parsedMessage.content);
-  } else if (parsedMessage && parsedMessage.type === "embed") {
-    let runeEmbed = runeToEmbed(parsedMessage.content, msg);
-    msg.channel.send({"embed" : runeEmbed });
-  } else if (parsedMessage && parsedMessage.type === "runeArray") {
-    parsedMessage.content.forEach((runeObj) => {
-      msg.channel.send({"embed": runeToEmbed(runeObj, msg)});
+    msg.channel.send({
+      content : parsedMessage.content
     });
-  } else if (msg.mentions.members.has(client.user.id, {ignoreEveryone:true})) {
-    msg.channel.send(randomFromArray(thxResp));
-}
-});
-
-function runeToEmbed(runeObject, inputMessage) {
-  const embed = new Discord.MessageEmbed(inputMessage, {
-    title: runeObject.name,
-    url: runeObject.descURL,
-    image: {
-      url: runeObject.imgURL,
-    },
-  });
-
-  return embed;
-}
+  } else if (parsedMessage && parsedMessage.type === "embed") {
+    msg.channel.send(runeToMessage(parsedMessage.content));
+  } else if (parsedMessage && parsedMessage.type === "runeArray") {
+    // Default Rune array
+    parsedMessage.content.forEach(runeObj => {
+      msg.channel.send(runeToMessage(runeObj));
+    });
+  } else if (parsedMessage && parsedMessage.type === "allRunesLinks") {
+    // All rune array
+    msg.channel.send({
+      content : "Here are links to descriptions and proper spelling for all the runes.",
+      components : parsedMessage.content.components
+    })
+  }
+  }
+);
 
 // Initialize bot by connecting to the server
 try {

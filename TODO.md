@@ -1,5 +1,5 @@
-Need to implement (wish list):
+# Need to implement (wish list)
 
 - help files, documentation
-- error processing
-- "LIKE" for names and commands
+- full feature list
+- localization for alternate languages to English
