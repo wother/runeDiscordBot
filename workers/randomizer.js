@@ -8,7 +8,7 @@
  * 
  * @param {Array} inputObject the array you want a random value from.
  */
- export function randomFromArray (arrayInput) {
+export function randomFromArray (arrayInput) {
     return arrayInput[randomIntBetween(0, arrayInput.length - 1)];
 };
 
