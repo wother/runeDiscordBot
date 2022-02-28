@@ -1,15 +1,17 @@
 import http from 'http';
+import { router } from "./router.js";
 
 const PORT = process.env.PORT || 8888;
 
 async function init(req, res) {
-    if (req.url === '/api' && req.method === 'GET') {
+    if (req.method === 'GET') {
         res.writeHead(200, {
             "Content-Type": "application/json"
         });
-        res.write("Hello there, Dave.");
+
+        router(req, res);
+
         
-        res.end()
     } else {
         res.writeHead(418, {
             "Content-Type": "applicaiton/json"

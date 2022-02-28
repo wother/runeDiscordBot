@@ -61,7 +61,7 @@ client.on("messageCreate", msg => {
 // Initialize bot by connecting to the server
 try {
   client.login(process.env.DISCORD_TOKEN);
-  setupAPI()
+  setupAPI();
 } catch (err) {
   throw new Error(err);
 }

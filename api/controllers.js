@@ -1,13 +1,18 @@
-export class Controller {
-    async getRune () {
-        // return rune object
-    }
+import {
+    randomRune
+} from "../workers/runes.js";
 
-    async getRunes (numberOfRunes) {
-        // return JSON array of rune objects
-    }
 
-    async getInfo(inputRuneName) {
-        // return the rune info JSON
-    }
+export function getRune() {
+    // return rune object
+
+    return randomRune(1);
+}
+
+export function getRunes(numberOfRunes) {
+    // return JSON array of rune objects
+}
+
+export function getInfo(inputRuneName) {
+    // return the rune info JSON
 }
