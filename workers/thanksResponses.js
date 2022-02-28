@@ -1,4 +1,4 @@
-const responses = [
+export const responses = [
     "Dawww, you are very welcome!",
     "It is known.",
     "I have spoken.",
@@ -13,5 +13,3 @@ const responses = [
     "Fer shizzle mai nizzle.",
     "Well then... that was unexpected."
 ];
-
-module.exports = responses;

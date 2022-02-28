@@ -16,7 +16,7 @@ import { runeToMessage } from "./workers/runeToEmbed.js";
 import { parseMessage } from "./workers/commandStringParse.js";
 
 // API Import
-import { setupAPI } from "./api/controller.js";
+import { setupAPI } from "./api/app.js";
 
 // Event listener when bot connects to the server.
 client.on("ready", () => {
