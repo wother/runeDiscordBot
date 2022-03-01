@@ -8,10 +8,7 @@ async function init(req, res) {
         res.writeHead(200, {
             "Content-Type": "application/json"
         });
-
         router(req, res);
-
-        
     } else {
         res.writeHead(418, {
             "Content-Type": "applicaiton/json"
