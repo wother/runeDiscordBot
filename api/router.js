@@ -15,24 +15,28 @@ export async function router(req, res) {
         case '/api/rune':
             // Handle rune endpoint
             let runeObj = getRune();
-            writeStringifyEndRes(res, runeObj)
+            writeStringifyEndRes(res, runeObj);
+            break;
         case '/api/runes':
             // Handle multi rune endpoint
             let runeArray = getRunes(Number.parseInt(args));
             writeStringifyEndRes(res, runeArray);
+            break;
         case '/api/info':
             // Handle information request
             let infoObj = getInfo(args);
             writeStringifyEndRes(res, infoObj);
+            break;
         case '/api/runeNames':
             let runeNameArray = getAllRuneNames();
             writeStringifyEndRes(res, runeNameArray);
+            break;
         default:
             // Handle fallthrough
     }
-}
+};
 
 function writeStringifyEndRes(responseInput, inputJson) {
-    responseInput.write(JSON.stringify(inputJson));
+    responseInput.write(JSON.stringify(inputJson));    
     responseInput.end();
-}
+};
