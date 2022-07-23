@@ -98,7 +98,7 @@ function parseVerb(inputStringArr) {
         }
         output = getRune(infoInput, true);
     } else if (verb.startsWith("uptime")) {
-        let uptimeString = `All **you** need to know is I am online.`;
+        let uptimeString = `All **you** need to know is I am online. Fer realsies.`;
         output = { "content" : uptimeString, "type": "text"};
     }
     return output;
