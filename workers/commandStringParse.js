@@ -87,9 +87,18 @@ function parseVerb(inputStringArr) {
             output = getRune(getRuneNumberString, false);
         }
     } else if (verb.startsWith("info")) {
-        output = getRune(inputStringArr[1] || verb.substr(4).trim(), true);
+        // TODO: Parse Brackets as well.
+        let infoInput = inputStringArr[1] || verb.substr(4).trim();
+        if (StringWorkers.hasBrackets(infoInput)) {
+            infoInput = StringWorkers.removeBrackets(infoInput);
+        }        
+        if (StringWorkers.hasColon(infoInput)) {
+            // console.log("Found a colon!");
+            infoInput = StringWorkers.removeColons(infoInput);
+        }
+        output = getRune(infoInput, true);
     } else if (verb.startsWith("uptime")) {
-        let uptimeString = `All **you** need to know is I am online.`;
+        let uptimeString = `All **you** need to know is I am online. Fer realsies.`;
         output = { "content" : uptimeString, "type": "text"};
     }
     return output;
@@ -124,7 +133,6 @@ function getRune (inputString, infoBoolean) {
             "type" : "allRunesLinks" 
         };
     }
-    return output;
 }
 
 function listCommand (listTestString) {

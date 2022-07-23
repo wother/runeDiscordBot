@@ -15,6 +15,9 @@ const client = new Client(
 import { runeToMessage } from "./workers/runeToEmbed.js";
 import { parseMessage } from "./workers/commandStringParse.js";
 
+// API Import
+import { setupAPI } from "./api/app.js";
+
 // Event listener when bot connects to the server.
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -58,6 +61,7 @@ client.on("messageCreate", msg => {
 // Initialize bot by connecting to the server
 try {
   client.login(process.env.DISCORD_TOKEN);
+  setupAPI();
 } catch (err) {
   throw new Error(err);
 }
