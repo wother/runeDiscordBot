@@ -1,0 +1,79 @@
+FORMAT: 1A
+
+# Runes
+
+All endpoints live under the `/api` subdirectory.
+
+## Rune [/rune]
+
+### Get a random Rune [GET]
+
++ Response 200 (Application/JSON)
+
+        {
+            "name": "Name Of The Rune",
+            "imgURL": "URL of the image for the Rune",
+            "descURL": "URL For the description of the Rune"
+        }  
+
+## Runes [/runes{?number}]
+
+### Grab a few Runes [GET]
+
++ Parameters
+    + number - The total number of runes you want in the array
+
++ Response 200 (Application/JSON)
+    
+        [
+            {
+                "name": "Name Of The First Rune",
+                "imgURL": "URL of the image for the Rune",
+                "descURL": "URL For the description of the Rune"
+            },
+            {
+                "name": "Name Of The Second Rune",
+                "imgURL": "URL of the image for the Rune",
+                "descURL": "URL For the description of the Rune"
+            },
+            {
+                "name": "Name Of The Third Rune",
+                "imgURL": "URL of the image for the Rune",
+                "descURL": "URL For the description of the Rune"
+            },
+            ...
+            {
+                "name": "Name Of The Last Rune",
+                "imgURL": "URL of the image for the Rune",
+                "descURL": "URL For the description of the Rune"
+            }
+        ]
+
+## Information [/info{?runeName}]
+
+### Gets information about named rune [GET]
+
++ Parameters
+    + runeName - The name of the Rune that you want information about
+
++ Response 200 (Application/JSON)
+
+        {
+            "name": "Name Of the Rune",
+            "imgURL": "URL for the image",
+            "descURL": "URL For the description"
+        }
+
+## Rune Names [/runeNames]
+
+### Retrns a List (array) of Names [GET]
+
++ Response 200 (Application/JSON)
+
+        [
+        "algiz",
+        "ansuz",
+        "berkano",
+        ...
+        "wunjo"
+        ]
