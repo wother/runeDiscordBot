@@ -13,33 +13,15 @@
  * These integers are held in an array, which we will generate here.
  */
 
-import { randomFromArray } from "../workers/randomizer.js";
+const randomFromArray = require("../workers/randomizer.js");
 
 const MIN_ARRAY_SIZE = 25;
-const MAX_ARRAY_SIZE = 2500;
+const MAX_ARRAY_SIZE = 250;
 
 const MIN_TEST_INTEGER = 1;
-const MAX_TEST_INTEGER = 9000;
+const MAX_TEST_INTEGER = 25;
 
-const MARGIN = (MAX_ARRAY_SIZE - MIN_ARRAY_SIZE) / 2;
-
-function runTests() {
-    let testMatrix = [];
-    let NumberOfTestArrays = 5000;
-    for (let index = 0; index < NumberOfTestArrays; index++) {
-        testMatrix.push(genRandomArray(MIN_ARRAY_SIZE, MAX_ARRAY_SIZE));
-    }
-    let passingTests = 0;
-    let failingTests = 0;
-    console.log('----- START TESTS ----')
-    testMatrix.forEach(testArray => {
-        let resultsObj = testForDistribution(testArray);
-        (resultsObj['Margin Result'].result === 'pass') ? passingTests++ : failingTests++
-    });
-    console.log(`Passing: ${passingTests}`);
-    console.log(`Failing: ${failingTests}`);
-    console.log('----- END TESTS -----');
-}
+const MARGIN = 1;
 
 /**
  * Takes an array of integers and determines if their mean (average)
@@ -55,10 +37,9 @@ function testForDistribution (inputIntArray) {
     let averageOfValues = averageValues(inputIntArray);
     let range = Math.abs(sortedArray[0] - sortedArray[sortedArray.length - 1]);
 
-    let testResults = { "Margin Result"  : marginTest(range),
-                        "Bounds Result"  : boundsTest(range / 2, averageOfValues),
-                        "Average" : averageOfValues,
-                        "testArray length"     : inputIntArray.length
+    let testResults = { "marginResult"  : marginTest(range ),
+                        "boundsResult"  : boundsTest(range / 2, averageOfValues),
+                        "testArray"     : inputIntArray
         }
 
     return testResults;
@@ -77,12 +58,7 @@ function marginTest (inputValue) {
 }
 
 function boundsTest(val1, val2) {
-    let outputObj = {
-        "range" : Math.floor((val2 > val1) ? val2 - val1 : val1 - val2),
-        "Value One" : val1,
-        "Value Two" : val2
-    };
-    return outputObj;
+
 }
 
 function averageValues(inputArray) {
@@ -109,5 +85,3 @@ function genRandomArray () {
 function softRandomNumber (min, max) {
     return  Math.floor(Math.random() * max + min);
 }
-
-runTests();

@@ -56,8 +56,8 @@ function runeLinkButton (inputTitle, URLinput) {
 
 function runeNameButton(name) {
   let outputButton = new MessageButton()
-  .setLabel(name.toString())
-  .setURL(genInfoLink(name))
-  .setStyle('LINK');
+    .setLabel(name.toString())
+    .setURL(genInfoLink(name))
+    .setStyle('LINK');
 return outputButton;
 }

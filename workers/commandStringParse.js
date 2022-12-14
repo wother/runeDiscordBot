@@ -87,16 +87,23 @@ function parseVerb(inputStringArr) {
             output = getRune(getRuneNumberString, false);
         }
     } else if (verb.startsWith("info")) {
-        // TODO: Parse Brackets as well.
-        let infoInput = inputStringArr[1] || verb.substr(4).trim();
-        if (StringWorkers.hasBrackets(infoInput)) {
-            infoInput = StringWorkers.removeBrackets(infoInput);
-        }        
-        if (StringWorkers.hasColon(infoInput)) {
-            // console.log("Found a colon!");
-            infoInput = StringWorkers.removeColons(infoInput);
+        // !info allrunes or names or all or list for a list of all the rune names.
+        if (inputStringArr[1] === 'allrunes' ||
+            inputStringArr[1] === 'names' ||
+            inputStringArr[1] === 'all' ||
+            inputStringArr[1] === 'list') {
+            output = {
+                "content": runeInfo('names'),
+                "type": "allRunesLinks"
+                }
+            }
+        // !info [runeName] for information on a specific Rune.
+        if (isRuneName(inputStringArr[1])) {
+            output = {
+                "content": runeInfo(inputStringArr[1]),
+                "type": "embed"
+            }
         }
-        output = getRune(infoInput, true);
     } else if (verb.startsWith("uptime")) {
         let uptimeString = `All **you** need to know is I am online. Fer realsies.`;
         output = { "content" : uptimeString, "type": "text"};

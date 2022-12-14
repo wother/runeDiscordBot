@@ -15,20 +15,24 @@ export async function router(req, res) {
         case '/api/rune':
             // Handle rune endpoint
             let runeObj = getRune();
+            console.log(runeObj);
             writeStringifyEndRes(res, runeObj);
             break;
         case '/api/runes':
             // Handle multi rune endpoint
             let runeArray = getRunes(Number.parseInt(args));
+            console.log(runeArray)
             writeStringifyEndRes(res, runeArray);
             break;
         case '/api/info':
             // Handle information request
             let infoObj = getInfo(args);
+            console.log(infoObj)
             writeStringifyEndRes(res, infoObj);
             break;
         case '/api/runeNames':
             let runeNameArray = getAllRuneNames();
+            console.log(runeNameArray)
             writeStringifyEndRes(res, runeNameArray);
             break;
         default:
