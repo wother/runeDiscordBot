@@ -1,4 +1,4 @@
-import {} from 'dotenv/config';
+import {} from 'dotenv/config.js';
 // Import libraries
 import { Client, Presence, Intents } from 'discord.js';
 const client = new Client(
@@ -60,8 +60,7 @@ client.on("messageCreate", msg => {
 
 // Initialize bot by connecting to the server
 try {
-  client.login(process.env.TEST_BOT_TOKEN);
-  // client.login(config.token);
+  client.login(process.env.DISCORD_TOKEN);
   setupAPI();
 } catch (err) {
   throw new Error(err);
