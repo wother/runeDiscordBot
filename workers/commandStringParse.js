@@ -98,6 +98,12 @@ function parseVerb(inputStringArr) {
                 }
             }
         // !info [runeName] for information on a specific Rune.
+        if (isRuneName(inputStringArr[1])) {
+            output = {
+                "content": runeInfo(inputStringArr[1]),
+                "type": "embed"
+            }
+        }
     } else if (verb.startsWith("uptime")) {
         let uptimeString = `All **you** need to know is I am online. Fer realsies.`;
         output = { "content" : uptimeString, "type": "text"};
