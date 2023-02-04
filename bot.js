@@ -1,4 +1,5 @@
-import {} from 'dotenv/config.js';
+import * as dotenv from 'dotenv'
+dotenv.config()
 // Import libraries
 import { Client, Presence, Intents } from 'discord.js';
 const client = new Client(
