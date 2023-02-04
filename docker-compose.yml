@@ -1,0 +1,7 @@
+services:
+  bot:
+    image: wother/rune-discord-bot
+    pull_policy: build
+    build:
+      dockerfile: ./Dockerfile
+      context: .
