@@ -5,7 +5,6 @@ WORKDIR /usr/src/app
 
 # app deps
 COPY package*.json ./
-COPY .env ./
 RUN npm install
 
 COPY . .
