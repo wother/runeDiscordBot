@@ -5,3 +5,5 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: .
+    ports:
+      - 9999:8888
