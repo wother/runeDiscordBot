@@ -1,8 +1,3 @@
-/** Where we wrap the Math object to randomize some 
- * values. 
- */
-
-
 /**
  * This method will return one value at random from the input Array.
  * 
