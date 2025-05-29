@@ -92,15 +92,15 @@ export function runeInfoImage(nameInput) {
 }
 
 function genImgLink(runeName) {
-    return `https://runesecrets.com/img/${runeName}-100x100.gif`;
+    return `/img/${runeName}-100x100.gif`;
 }
 
 export function getInfoImage(runeName) {
-    return `https://runesecrets.com/img/info-${runeName}.gif`;
+    return `/img/info-${runeName}.gif`;
 }
 
 export function genInfoLink(runeName) {
-    return `https://runesecrets.com/rune-meanings/${runeName}`;
+    return `/rune-meanings/${runeName}`;
 }
 
 function numUniqueRunes(inputNumber) {
