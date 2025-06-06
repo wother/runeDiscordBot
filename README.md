@@ -1,5 +1,7 @@
 # Rune Draw Bot for Discord #
 
+**CURRENTLY UNDER CONSTRUCTION**
+
 ### Usage: ###
 
 Add the bot to your server with [this link](https://discord.com/api/oauth2/authorize?client_id=714237973486633031&permissions=18432&scope=bot).
@@ -15,10 +17,8 @@ publicise the token.
 
 ### Patronage: ###
 
-Please consider supporting [Rune secrets on Patreon](https://patreon.com/tyriel)
+Please consider supporting Your local Animal Shelter. 
 
 ## LICENCE ##
 
 This code repository is covered under the MIT Licence [available here](./LICENCE)
-
-Please consider supporting [Rune secrets on Patreon](https://patreon.com/tyriel)
