@@ -3,6 +3,7 @@ package workers
 import (
 	"fmt"
 	"math/rand"
+	"os"
 )
 
 var futharkNames = []string{
@@ -35,7 +36,7 @@ var futharkNames = []string{
 // Rune holds information about a single rune.
 type Rune struct {
 	Name    string
-	ImgURL  string
+	ImgFile string
 	DescURL string
 }
 
@@ -77,17 +78,41 @@ func IsRuneName(s string) bool {
 func genRuneObject(name string) Rune {
 	return Rune{
 		Name:    name,
-		ImgURL:  genImgLink(name),
-		DescURL: genInfoLink(name),
+		ImgFile: genImgPath(name),
+		DescURL: "", // No longer needed
 	}
 }
 
-func genImgLink(runeName string) string {
-	return fmt.Sprintf("/img/%s-100x100.gif", runeName)
+func genImgPath(runeName string) string {
+	// 5% chance for rare "dreams" variant
+	if rand.Float32() < 0.05 {
+		// Try dreams directory first - let fileExists handle the name variations
+		dreamsPath := fmt.Sprintf("media/solo/dreams/%s.png", runeName)
+		if fileExists(dreamsPath) {
+			fmt.Printf("🌙 Rare dreams variant selected for %s\n", runeName)
+			return dreamsPath
+		}
+	}
+
+	// Default to regular image
+	return fmt.Sprintf("media/solo/%s.png", runeName)
 }
 
-func genInfoLink(runeName string) string {
-	return fmt.Sprintf("/rune-meanings/%s", runeName)
+func genSmallImgPath(runeName string) string {
+	// Try the exact name first
+	exactPath := fmt.Sprintf("media/solo/resized/%s (Small).png", runeName)
+	if fileExists(exactPath) {
+		return exactPath
+	}
+
+	// Try lowercase variant
+	lowerPath := fmt.Sprintf("media/solo/resized/%s (small).png", runeName)
+	if fileExists(lowerPath) {
+		return lowerPath
+	}
+
+	// Fallback to exact name (will fail gracefully if doesn't exist)
+	return exactPath
 }
 
 func numUniqueRunes(number int) []Rune {
@@ -106,4 +131,9 @@ func numUniqueRunes(number int) []Rune {
 	}
 
 	return output
+}
+
+func fileExists(filename string) bool {
+	_, err := os.Stat(filename)
+	return err == nil
 }

@@ -48,43 +48,41 @@ func parseVerb(inputStringArr []string) map[string]interface{} {
 !cast five for a five rune casting (careful...)
 !info allrunes or names or all or list for a list of all the rune names.
 !info [runeName] for information on a specific Rune.`
-			
-		output["content"] = helpString
+
 		output["type"] = "text"
+		output["content"] = helpString
 	case strings.HasPrefix(verb, "cast"), strings.HasPrefix(verb, "draw"), strings.HasPrefix(verb, "rune"):
-		if (verb == "cast" || verb == "draw" || verb == "rune") && len(inputStringArr) == 1 {
-			output["content"] = RandomRune(1)
+		if len(inputStringArr) > 1 {
+			numStr := inputStringArr[1]
+			if stringInSlice(numStr, numberStrings) {
+				num := NumStringToInt(numStr)
+				if num == 1 {
+					output["type"] = "embed"
+					output["content"] = RandomRune(1)
+				} else {
+					output["type"] = "runeArray"
+					output["content"] = RandomRune(num)
+				}
+			}
+		} else {
 			output["type"] = "embed"
-		} else if len(verb) > maxVerbLength || len(inputStringArr) > 1 {
-			getRuneNumberString := ""
-
-			if HasBrackets(verb) {
-				verb = RemoveBrackets(verb)
-			} else if len(inputStringArr) > 1 && HasBrackets(inputStringArr[1]) {
-				inputStringArr[1] = RemoveBrackets(inputStringArr[1])
-			}
-
-			if len(verb) > maxVerbLength {
-				getRuneNumberString = verb[maxVerbLength:]
-			} else if len(inputStringArr) > 1 && len(verb) == maxVerbLength {
-				getRuneNumberString = inputStringArr[1]
-			}
-			output = getRune(getRuneNumberString, false)
+			output["content"] = RandomRune(1)
 		}
 	case strings.HasPrefix(verb, "info"):
 		if len(inputStringArr) > 1 {
-			if inputStringArr[1] == "allrunes" || inputStringArr[1] == "names" || inputStringArr[1] == "all" || inputStringArr[1] == "list" {
-				output["content"] = RuneInfo("names")
+			subject := inputStringArr[1]
+			if listCommand(subject) {
 				output["type"] = "allRunesLinks"
-			} else if IsRuneName(inputStringArr[1]) {
-				output["content"] = RuneInfo(inputStringArr[1])
-				output["type"] = "embed"
+				output["content"] = RuneInfo("names")
+			} else if IsRuneName(subject) {
+				output["type"] = "info"
+				output["content"] = RuneInfo(subject)
 			}
 		}
 	case strings.HasPrefix(verb, "uptime"):
 		uptimeString := "All you need to know is I am online. Fer realsies."
-		output["content"] = uptimeString
 		output["type"] = "text"
+		output["content"] = uptimeString
 	}
 
 	return output
