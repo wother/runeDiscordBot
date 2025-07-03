@@ -1,6 +1,8 @@
 # Rune Draw Bot for Discord #
 
-**CURRENTLY UNDER CONSTRUCTION**
+v3 is live and stable. Need to circle back around on the API and docs, probably reformat the help output to be a bit more polished... dunno.
+
+This is a Discord bot that draws runes from the Elder Futhark and displays them in a channel.
 
 ### Usage: ###
 
@@ -14,10 +16,6 @@ publicise the token.
 - `!draw [number]`  draw and display this many runes, default is one
 - `!list` gives you a referance for rune names, alphabetically.
 - `!lookup` [runeName] fetches the meaning for a rune from the Rune Secrets Site
-
-### Patronage: ###
-
-Please consider supporting Your local Animal Shelter. 
 
 ## LICENCE ##
 
