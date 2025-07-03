@@ -60,3 +60,10 @@ typings/
 # ignore IDE settings
 # vscode debugging files
 .vscode
+
+# Compiled Go binaries
+*.exe
+*-linux
+runeDiscordBot
+runeDiscordBot-linux
+runeDiscordBot.exe
