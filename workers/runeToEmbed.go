@@ -91,27 +91,7 @@ func runeLinkButton(title, url string) discordgo.Button {
 	}
 }
 
-func AllRunesLinks(futharkArray []string) *discordgo.MessageSend {
-	output := &discordgo.MessageSend{
-		Components: []discordgo.MessageComponent{},
-	}
-	runeNameMatrix := ChunkArray(futharkArray, 5)
-	for _, nameArray := range runeNameMatrix {
-		messageRow := discordgo.ActionsRow{}
-		for _, runeName := range nameArray {
-			messageRow.Components = append(messageRow.Components, runeNameButton(runeName))
-		}
-		output.Components = append(output.Components, messageRow)
-	}
-	return output
-}
 
-func runeNameButton(name string) discordgo.Button {
-	return discordgo.Button{
-		Label: name,
-		Style: discordgo.LinkButton,
-	}
-}
 
 // RuneToInfoMessage converts a rune to a Discord message with info gif
 func RuneToInfoMessage(runeObj Rune) *discordgo.MessageSend {

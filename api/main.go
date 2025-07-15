@@ -13,10 +13,13 @@ import (
 
 // SetupAPI initializes and starts the API server.
 func SetupAPI() {
+	http.HandleFunc("/api/", getDocsHandler)
+	http.HandleFunc("/api/docs", getDocsHandler)
 	http.HandleFunc("/api/rune", getRuneHandler)
 	http.HandleFunc("/api/runes", getRunesHandler)
 	http.HandleFunc("/api/info", getInfoHandler)
 	http.HandleFunc("/api/runeNames", getAllRuneNamesHandler)
+	http.HandleFunc("/api/status", getStatusHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -27,15 +30,48 @@ func SetupAPI() {
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
+func getDocsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		http.Error(w, "I'm a teapot, not a Coffee maker, cannot brew coffee in a teapot.", http.StatusTeapot)
+		return
+	}
+
+	docs := `
+
+The Rune Secrets Bot API allows you to draw runes from the Elder Futhark.
+
+**Endpoints:**
+
+* **GET /api/status**: Returns the API's status.
+* **GET /api/rune**: Returns a single random rune with an embedded image.
+* **GET /api/runes?num=[number]**: Returns a specified number of random runes with embedded images.
+* **GET /api/info?name=[runeName]**: Returns information on a specific Rune, with an embedded image.
+* **GET /api/runeNames**: Returns a list of all the rune names.
+`
+	w.Header().Set("Content-Type", "text/plain")
+	fmt.Fprint(w, docs)
+}
+
 func getRuneHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, "I'm a teapot, not a Coffee maker, cannot brew coffee in a teapot.", http.StatusTeapot)
 		return
 	}
 
-	runeObj := workers.RandomRune(1)
+	runeObj := workers.RandomRune(1).(workers.Rune)
+	imgBase64, err := encodeImageToBase64(runeObj.ImgFile)
+	if err != nil {
+		http.Error(w, "Failed to encode image", http.StatusInternalServerError)
+		return
+	}
+
+	response := RuneResponse{
+		Name:      runeObj.Name,
+		ImgBase64: imgBase64,
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(runeObj)
+	json.NewEncoder(w).Encode(response)
 }
 
 func getRunesHandler(w http.ResponseWriter, r *http.Request) {
@@ -51,9 +87,23 @@ func getRunesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	runeArray := workers.RandomRune(num)
+	runeArray := workers.RandomRune(num).([]workers.Rune)
+	var response []RuneResponse
+
+	for _, runeObj := range runeArray {
+		imgBase64, err := encodeImageToBase64(runeObj.ImgFile)
+		if err != nil {
+			http.Error(w, "Failed to encode image", http.StatusInternalServerError)
+			return
+		}
+		response = append(response, RuneResponse{
+			Name:      runeObj.Name,
+			ImgBase64: imgBase64,
+		})
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(runeArray)
+	json.NewEncoder(w).Encode(response)
 }
 
 func getInfoHandler(w http.ResponseWriter, r *http.Request) {
@@ -74,8 +124,20 @@ func getInfoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	runeObj := infoObj.(workers.Rune)
+	imgBase64, err := encodeImageToBase64(runeObj.ImgFile)
+	if err != nil {
+		http.Error(w, "Failed to encode image", http.StatusInternalServerError)
+		return
+	}
+
+	response := RuneResponse{
+		Name:      runeObj.Name,
+		ImgBase64: imgBase64,
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(infoObj)
+	json.NewEncoder(w).Encode(response)
 }
 
 func getAllRuneNamesHandler(w http.ResponseWriter, r *http.Request) {
@@ -87,4 +149,15 @@ func getAllRuneNamesHandler(w http.ResponseWriter, r *http.Request) {
 	runeNames := workers.GetFutharkArray()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(runeNames)
+}
+
+func getStatusHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		http.Error(w, "I'm a teapot, not a Coffee maker, cannot brew coffee in a teapot.", http.StatusTeapot)
+		return
+	}
+
+	status := map[string]string{"status": "online"}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(status)
 }

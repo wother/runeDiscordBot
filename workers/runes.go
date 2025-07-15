@@ -33,6 +33,9 @@ var futharkNames = []string{
 	"wunjo",
 }
 
+// MediaPath is the base path for media files.
+var MediaPath = "media"
+
 // Rune holds information about a single rune.
 type Rune struct {
 	Name    string
@@ -60,7 +63,7 @@ func RuneInfo(runeName string) interface{} {
 	if IsRuneName(runeName) {
 		return genRuneObject(runeName)
 	} else if runeName == "names" {
-		return AllRunesLinks(futharkNames)
+		return futharkNames
 	}
 	return nil
 }
@@ -87,7 +90,7 @@ func genImgPath(runeName string) string {
 	// 5% chance for rare "dreams" variant
 	if rand.Float32() < 0.05 {
 		// Try dreams directory first - let fileExists handle the name variations
-		dreamsPath := fmt.Sprintf("media/solo/dreams/%s.png", runeName)
+		dreamsPath := fmt.Sprintf("%s/solo/dreams/%s.png", MediaPath, runeName)
 		if fileExists(dreamsPath) {
 			fmt.Printf("🌙 Rare dreams variant selected for %s\n", runeName)
 			return dreamsPath
@@ -95,18 +98,18 @@ func genImgPath(runeName string) string {
 	}
 
 	// Default to regular image
-	return fmt.Sprintf("media/solo/%s.png", runeName)
+	return fmt.Sprintf("%s/solo/%s.png", MediaPath, runeName)
 }
 
 func genSmallImgPath(runeName string) string {
 	// Try the exact name first
-	exactPath := fmt.Sprintf("media/solo/resized/%s (Small).png", runeName)
+	exactPath := fmt.Sprintf("%s/solo/resized/%s (Small).png", MediaPath, runeName)
 	if fileExists(exactPath) {
 		return exactPath
 	}
 
 	// Try lowercase variant
-	lowerPath := fmt.Sprintf("media/solo/resized/%s (small).png", runeName)
+	lowerPath := fmt.Sprintf("%s/solo/resized/%s (small).png", MediaPath, runeName)
 	if fileExists(lowerPath) {
 		return lowerPath
 	}

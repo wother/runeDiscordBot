@@ -1,9 +1,8 @@
 services:
   bot:
     image: wother/rune-discord-bot
-    pull_policy: build
     build:
       dockerfile: ./Dockerfile
       context: .
     ports:
-      - 9999:8888
+      - 8888:8888
