@@ -114,14 +114,14 @@ prompt_discord_token() {
     done
 }
 
-# Function to prompt for hostname (optional)
-prompt_hostname() {
+# Function to prompt for API configuration (optional)
+prompt_api_config() {
     echo
-    echo -e "${BLUE}🌐${NC} Hostname Configuration (Optional)"
-    echo "If you want to run the API server, enter your hostname/domain."
-    echo "Leave empty if you only want to run the Discord bot."
+    echo -e "${BLUE}🌐${NC} API Configuration (Optional)"
+    echo "If you want to run the API server, you can specify a port."
+    echo "Leave empty to use the default (8888) or if you only want to run the Discord bot."
     echo
-    read -p "Enter hostname (optional): " HOSTNAME
+    read -p "Enter API Port (optional, default 8888): " API_PORT
 }
 
 # Function to generate .env file
@@ -136,21 +136,16 @@ DISCORD_TOKEN=${DISCORD_TOKEN}
 # API Configuration (optional)
 EOF
 
-    if [ -n "$HOSTNAME" ]; then
-        echo "HOSTNAME=${HOSTNAME}" >> .env
-        echo "API_ONLY=false" >> .env
+    if [ -n "$API_PORT" ]; then
+        echo "PORT=${API_PORT}" >> .env
     else
-        echo "# HOSTNAME=your-domain.com" >> .env
-        echo "# API_ONLY=false" >> .env
+        echo "# PORT=8888" >> .env
     fi
     
     cat >> .env << EOF
 
 # Development/Testing
 # TEST_BOT_TOKEN=your-test-token-here
-
-# To run in API-only mode (no Discord bot):
-# API_ONLY=true
 EOF
     
     echo -e "${GREEN}✓${NC} .env file created successfully!"
@@ -166,18 +161,16 @@ build_project() {
     echo "Downloading Go modules..."
     go mod download
     
-    # Build Linux binary
-    echo "Building Linux binary..."
-    go build -o runeDiscordBot-linux main.go
+    # Build API binary
+    echo "Building API binary..."
+    go build -o runeDiscordBot-api ./cmd/api
     
-    # Build for current platform if different
-    if [ "$(uname)" != "Linux" ]; then
-        echo "Building binary for current platform..."
-        go build -o runeDiscordBot main.go
-    fi
+    # Build Discord bot binary
+    echo "Building Discord bot binary..."
+    go build -o runeDiscordBot-discord ./cmd/discord
     
     echo -e "${GREEN}✓${NC} Build completed successfully!"
-    echo "Binary created: runeDiscordBot-linux"
+    echo "Binaries created: runeDiscordBot-api, runeDiscordBot-discord"
 }
 
 # Main setup process
@@ -212,14 +205,14 @@ main() {
             build_project
             echo
             echo -e "${GREEN}🎉${NC} Setup completed! Your bot is ready to run."
-            echo "Start with: ./runeDiscordBot-linux"
+            echo "Start with: ./runeDiscordBot-discord or ./runeDiscordBot-api"
             return
         fi
     fi
     
     # Configuration prompts
     prompt_discord_token
-    prompt_hostname
+    prompt_api_config
     generate_env_file
     
     # Build the project
@@ -231,10 +224,12 @@ main() {
     echo "Next steps:"
     echo "1. Review the .env file and adjust settings if needed"
     echo "2. Make sure the media/ folder is present with rune images"
-    echo "3. Run the bot: ./runeDiscordBot-linux"
+    echo "3. Run the Discord bot: ./runeDiscordBot-discord"
+    echo "4. Run the API server: ./runeDiscordBot-api"
     echo
     echo "For deployment, copy these files to your server:"
-    echo "  - runeDiscordBot-linux (the binary)"
+    echo "  - runeDiscordBot-api (the API binary)"
+    echo "  - runeDiscordBot-discord (the Discord bot binary)"
     echo "  - .env (your configuration)"
     echo "  - media/ (the rune images folder)"
 }
